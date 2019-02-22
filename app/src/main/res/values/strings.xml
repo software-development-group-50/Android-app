@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">NigiriFallsApp</string>
+    <string name="Welcome">Choose a dish</string>
+    <string name="button">Button</string>
+    <string name="dish_1">Dish 1</string>
+    <string name="button2">Button</string>
+    <string name="dish_5">Dish 5</string>
+    <string name="dish_4">Dish 4</string>
+    <string name="dish_3">Dish 3</string>
+    <string name="dish_2">Dish 2</string>
+    <string name="sushi1">Sushi1</string>
+    <string name="button96">Button i</string>s
 </resources>
