@@ -26,7 +26,6 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity {
 
     Button buttonHandlekurv;
-    Button buttonMeny;
     TextView textView;
     RequestQueue requestQueue;
 
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
         buttonHandlekurv = findViewById(R.id.button);
-        buttonMeny = findViewById(R.id.buttonMenu);
         textView = findViewById(R.id.textView);
 
     }
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         tv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         tv.setText("smal sak");
         viewGroup.addView(tv);*/
-        LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        /*LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dishView = layoutInflater.inflate(R.layout.dish_layout, null);
         TextView textID = dishView.findViewById(R.id.textID);
         textID.setText("ID");
@@ -60,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
         textPrice.setText("Price");
 
         ViewGroup insertPoint = (ViewGroup) findViewById(R.id.linearLayout);
-        insertPoint.addView(dishView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+        insertPoint.addView(dishView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));*/
     }
 
     /*private void addMenuToView(Menu menu){ //Parameter Menu-class
         LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        for dish in menu.getDishList(){
+        for (Dish dish : menu.getDishList()){
             View dishView = layoutInflater.inflate(R.layout.dish_layout, null);
             TextView textID = dishView.findViewById(R.id.textID);
             TextView textName = dishView.findViewById(R.id.textName);
@@ -77,11 +75,6 @@ public class MainActivity extends AppCompatActivity {
             textPrice.setText(dish.getPrice());
         }
     }*/
-
-    public void onButtonMeny(View view) throws MalformedURLException, IOException {
-        String url = "http://folk.ntnu.no/magnuti/getalldish.php";
-        sendRequest(url);
-    }
 
     private String readStream(InputStream in){ //Idk but it works
         Scanner scanner = new Scanner(in).useDelimiter("\\A");
