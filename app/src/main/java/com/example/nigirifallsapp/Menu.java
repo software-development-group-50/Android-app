@@ -1,4 +1,6 @@
 package com.example.nigirifallsapp;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +19,10 @@ public class Menu {
 
         for (String dish : dishes){
             String[] info = dish.split("\\|");
-            int dishID = Integer.parseInt(info[1]);
-            String name = info[2];
-            String desc = info[3];
-            int price = Integer.parseInt(info[4]);
+            int dishID = Integer.parseInt(info[0].trim());
+            String name = info[1];
+            String desc = info[2];
+            int price = Integer.parseInt(info[3].trim());
 
             updatedMenu.add(new Dish(dishID,name,desc,price));
         }

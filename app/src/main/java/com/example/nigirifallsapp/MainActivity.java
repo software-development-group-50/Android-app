@@ -14,6 +14,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.w3c.dom.Text;
 
@@ -26,17 +28,30 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity {
 
     Button buttonHandlekurv;
-    TextView textView;
     RequestQueue requestQueue;
+    String stringFromPHP;
+    TextView textView;
+    Menu menu;
+    //List<Dish> dishList = new ArrayList<Dish>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         requestQueue = Volley.newRequestQueue(this);
+        sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
         buttonHandlekurv = findViewById(R.id.button);
         textView = findViewById(R.id.textView);
+    }
+
+    private void onActualResponse(String response){
+        stringFromPHP = response;
+        this.menu = new Menu();
+        menu.updateMenu(stringFromPHP);
+        addMenuToView(this.menu);
+    }
+
+    private void onErrorResponse(VolleyError error){
 
     }
 
@@ -61,20 +76,23 @@ public class MainActivity extends AppCompatActivity {
         insertPoint.addView(dishView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));*/
     }
 
-    /*private void addMenuToView(Menu menu){ //Parameter Menu-class
-        LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    private void addMenuToView(Menu menu){ //Parameter Menu-class
         for (Dish dish : menu.getDishList()){
+            LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View dishView = layoutInflater.inflate(R.layout.dish_layout, null);
             TextView textID = dishView.findViewById(R.id.textID);
             TextView textName = dishView.findViewById(R.id.textName);
             TextView textDesc = dishView.findViewById(R.id.textDesc);
             TextView textPrice = dishView.findViewById(R.id.textPrice);
-            textID.setText(dish.getID());
+            textID.setText(Integer.toString(dish.getID()));
             textName.setText(dish.getName());
             textDesc.setText(dish.getDesc());
-            textPrice.setText(dish.getPrice());
+            textPrice.setText(Integer.toString(dish.getPrice()));
+
+            ViewGroup insertPoint = (ViewGroup) findViewById(R.id.linearLayout);
+            insertPoint.addView(dishView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
         }
-    }*/
+    }
 
     private String readStream(InputStream in){ //Idk but it works
         Scanner scanner = new Scanner(in).useDelimiter("\\A");
@@ -86,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                textView.setText(response);
+                onActualResponse(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                textView.setText(error.toString());
+                onErrorResponse(error);
             }
         });
 
