@@ -80,11 +80,9 @@ public class MainActivity extends AppCompatActivity {
         for (Dish dish : menu.getDishList()){
             LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View dishView = layoutInflater.inflate(R.layout.dish_layout, null);
-            TextView textID = dishView.findViewById(R.id.textID);
             TextView textName = dishView.findViewById(R.id.textName);
             TextView textDesc = dishView.findViewById(R.id.textDesc);
             TextView textPrice = dishView.findViewById(R.id.textPrice);
-            textID.setText(Integer.toString(dish.getID()));
             textName.setText(dish.getName());
             textDesc.setText(dish.getDesc());
             textPrice.setText(Integer.toString(dish.getPrice()));
