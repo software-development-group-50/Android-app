@@ -14,25 +14,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.w3c.dom.Text;
-
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.Scanner;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonHandlekurv;
+    Button buttonCheckout;
     RequestQueue requestQueue;
     String stringFromPHP;
-    TextView textView;
     Menu menu;
-    //List<Dish> dishList = new ArrayList<Dish>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         requestQueue = Volley.newRequestQueue(this);
         sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
-        buttonHandlekurv = findViewById(R.id.button);
-        textView = findViewById(R.id.textView);
+        buttonCheckout = findViewById(R.id.buttonCheckout);
     }
 
     private void onActualResponse(String response){
@@ -55,25 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onButtonAdd(View view){
-        /*ViewGroup viewGroup = (ViewGroup) findViewById(R.id.linearLayout);
-        TextView tv = new TextView(this);
-        tv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tv.setText("smal sak");
-        viewGroup.addView(tv);*/
-        /*LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dishView = layoutInflater.inflate(R.layout.dish_layout, null);
-        TextView textID = dishView.findViewById(R.id.textID);
-        textID.setText("ID");
-        TextView textName = dishView.findViewById(R.id.textName);
-        textName.setText("Name");
-        TextView textDesc = dishView.findViewById(R.id.textDesc);
-        textDesc.setText("Description");
-        TextView textPrice = dishView.findViewById(R.id.textPrice);
-        textPrice.setText("Price");
-
-        ViewGroup insertPoint = (ViewGroup) findViewById(R.id.linearLayout);
-        insertPoint.addView(dishView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));*/
+    public void onButtonCheckout(View view){
+        // Go to checkout activity
     }
 
     private void addMenuToView(Menu menu){ //Parameter Menu-class
