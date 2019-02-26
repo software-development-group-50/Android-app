@@ -16,15 +16,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import android.os.Parcel;
 import android.os.Parcelable;
 
 
-public class MenuActivity extends AppCompatActivity implements Parcelable{
+public class MenuActivity extends AppCompatActivity {
 
     public static final String OrderIntent = "MenuActivity.IntentString.Order";
     Button buttonCheckout;
@@ -124,15 +122,5 @@ public class MenuActivity extends AppCompatActivity implements Parcelable{
         });
 
         requestQueue.add(stringRequest);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
     }
 }
