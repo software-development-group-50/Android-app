@@ -11,7 +11,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ThirdActivity extends AppCompatActivity {
 
@@ -21,10 +24,13 @@ public class ThirdActivity extends AppCompatActivity {
         setContentView(R.layout.activity_third);
 
         Intent intent = this.getIntent();
-        ArrayList<Dish> order = intent.getParcelableArrayListExtra(MenuActivity.OrderIntent);
+        //ArrayList<Dish> order = intent.getParcelableArrayListExtra(MenuActivity.OrderIntent);
+        Order order = intent.getParcelableExtra(MenuActivity.OrderIntent);
 
         // Function to add every Dish-item from ArrayList order to the ScrollView
-        for (int i = 0; i < order.size(); i++) {
+        //for (int i = 0; i < numOfEachDish.keySet().size(); i++) {
+        for (Map.Entry<Dish, Integer> map : order.getNumOfEachDish().entrySet()){
+            // Add if not == 0
             LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View dishView = layoutInflater.inflate(R.layout.dish_layout, null);
 
@@ -32,9 +38,10 @@ public class ThirdActivity extends AppCompatActivity {
             TextView textDesc = dishView.findViewById(R.id.textDesc);
             TextView textPrice = dishView.findViewById(R.id.textPrice);
 
-            textName.setText(order.get(i).getName());
-            textDesc.setText(order.get(i).getDesc());
-            textPrice.setText(Integer.toString(order.get(i).getPrice()));
+            Dish dish = map.getKey();
+            int price = dish.getPrice();
+            textName.setText(dish.getName());
+            textPrice.setText(map.getValue().toString()); // fix
 
 
             ViewGroup insertPoint = (ViewGroup) findViewById(R.id.linearLayout);
