@@ -1,13 +1,10 @@
 package com.example.nigirifallsapp;
 
-
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.TextView;
 
+// The class implements Parcelable because it is required to pass the ArrayList order.
 public class Dish extends AppCompatActivity implements Parcelable {
     int dishID;
     String name;

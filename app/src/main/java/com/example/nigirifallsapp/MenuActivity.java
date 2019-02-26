@@ -15,10 +15,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import android.os.Parcelable;
 
 
@@ -35,10 +33,28 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        requestQueue = Volley.newRequestQueue(this);
-        sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
-        buttonCheckout = findViewById(R.id.buttonCheckout);
+        this.requestQueue = Volley.newRequestQueue(this);
+        this.sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
+        this.buttonCheckout = findViewById(R.id.buttonCheckout);
         this.order = new ArrayList<>();
+    }
+
+    // Function for sending a HTTP request to the PHP-script
+    private void sendRequest(String url) {
+        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                onActualResponse(response); // The extra function is needed because of the scope of the @Override function
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(stringRequest);
     }
 
     private void onActualResponse(String response){
@@ -48,25 +64,7 @@ public class MenuActivity extends AppCompatActivity {
         addMenuToView(this.menu);
     }
 
-    public void onButtonCheckout(View view){
-        Intent intent = new Intent(this, ThirdActivity.class);
-        intent.putParcelableArrayListExtra(OrderIntent, (ArrayList<? extends Parcelable>) this.order);
-        startActivity(intent);
-    }
-
-    private void onAddDish(Dish dish){
-        this.order.add(dish);
-        //buttonCheckout.setText(dish.getName());
-    }
-
-    private void onRemoveDish(Dish dish){
-        try{
-            this.order.remove(dish);
-        } catch (Exception e){
-
-        }
-    }
-
+    // Function for adding each Dish-item to the ScrollView
     private void addMenuToView(Menu menu){ //Parameter Menu-class
         final List<Dish> tempDishList = menu.getDishList();
         for(int i = 0; i < tempDishList.size(); i++){
@@ -102,25 +100,23 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-    private String readStream(InputStream in){ //Idk but it works
-        Scanner scanner = new Scanner(in).useDelimiter("\\A");
-        return scanner.hasNext() ? scanner.next() : "";
+    // Function for moving to the Checkout-activity, the ArrayList this.order is passed to the Checkout-activity
+    public void onButtonCheckout(View view){
+        Intent intent = new Intent(this, ThirdActivity.class);
+        intent.putParcelableArrayListExtra(OrderIntent, (ArrayList<? extends Parcelable>) this.order);
+        startActivity(intent);
     }
 
-    private void sendRequest(String url) {
-        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                onActualResponse(response); //Lol remove this
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+    private void onAddDish(Dish dish){
+        this.order.add(dish);
+        //buttonCheckout.setText(dish.getName());
+    }
 
-            }
-        });
+    private void onRemoveDish(Dish dish){
+        try{
+            this.order.remove(dish);
+        } catch (Exception e){
 
-        requestQueue.add(stringRequest);
+        }
     }
 }

@@ -23,6 +23,7 @@ public class ThirdActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         ArrayList<Dish> order = intent.getParcelableArrayListExtra(MenuActivity.OrderIntent);
 
+        // Function to add every Dish-item from ArrayList order to the ScrollView
         for (int i = 0; i < order.size(); i++) {
             LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View dishView = layoutInflater.inflate(R.layout.dish_layout, null);
