@@ -1,6 +1,7 @@
 package com.example.nigirifallsapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,15 +17,19 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String OrderIntent = "MainActivity.IntentString.Order";
     Button buttonCheckout;
     RequestQueue requestQueue;
     String stringFromPHP;
     Menu menu;
+    List<Dish> order = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,26 +47,58 @@ public class MainActivity extends AppCompatActivity {
         addMenuToView(this.menu);
     }
 
-    private void onErrorResponse(VolleyError error){
+    public void onButtonCheckout(View view){
+        /*Intent intent = new Intent(this, CheckoutActivity.class);
+        intent.putExtra(OrderIntent, (ArrayList<Dish>) this.order);
+        startActivity(intent);*/
 
+        /* Put this in the CheckoutActivity
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+         */
     }
 
-    public void onButtonCheckout(View view){
-        // Go to checkout activity
+    private void onAddDish(Dish dish){
+        this.order.add(dish);
+    }
+
+    private void onRemoveDish(Dish dish){
+        try{
+            this.order.remove(dish);
+        } catch (Exception e){
+
+        }
     }
 
     private void addMenuToView(Menu menu){ //Parameter Menu-class
-        for (Dish dish : menu.getDishList()){
+        final List<Dish> tempDishList = menu.getDishList();
+        for(int i = 0; i < tempDishList.size(); i++){
             LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View dishView = layoutInflater.inflate(R.layout.dish_layout, null);
-            TextView textID = dishView.findViewById(R.id.textID);
+
             TextView textName = dishView.findViewById(R.id.textName);
             TextView textDesc = dishView.findViewById(R.id.textDesc);
             TextView textPrice = dishView.findViewById(R.id.textPrice);
-            textID.setText(Integer.toString(dish.getID()));
-            textName.setText(dish.getName());
-            textDesc.setText(dish.getDesc());
-            textPrice.setText(Integer.toString(dish.getPrice()));
+            final Button buttonPluss = dishView.findViewById(R.id.buttonPluss);
+            final Button buttonMinus = dishView.findViewById(R.id.buttonMinus);
+
+            textName.setText(tempDishList.get(i).getName());
+            textDesc.setText(tempDishList.get(i).getDesc());
+            textPrice.setText(Integer.toString(tempDishList.get(i).getPrice()));
+            buttonPluss.setId(i);
+            buttonMinus.setId(i);
+            buttonPluss.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onAddDish(tempDishList.get(buttonPluss.getId()));
+                }
+            });
+            buttonMinus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRemoveDish(tempDishList.get(buttonMinus.getId()));
+                }
+            });
 
             ViewGroup insertPoint = (ViewGroup) findViewById(R.id.linearLayout);
             insertPoint.addView(dishView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
@@ -78,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                onActualResponse(response);
+                onActualResponse(response); //Lol remove this
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                onErrorResponse(error);
+
             }
         });
 

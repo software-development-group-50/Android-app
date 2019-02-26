@@ -6,48 +6,61 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toTopOf="@+id/textDesc"
-        app:layout_constraintEnd_toStartOf="@+id/textName"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="ID" />
-
-    <TextView
         android:id="@+id/textDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textPrice"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textID"
+        app:layout_constraintTop_toBottomOf="@+id/textName"
         tools:text="Description" />
 
     <TextView
         android:id="@+id/textName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:textSize="28sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textID"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textDesc"
+        app:layout_constraintEnd_toStartOf="@+id/textPrice"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textID"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Name" />
 
     <TextView
         android:id="@+id/textPrice"
-        android:textSize="32sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textDesc"
+        android:textSize="32sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textName"
+        app:layout_constraintEnd_toStartOf="@+id/buttonMinus"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textName"
+        tools:text="Price" />
+
+    <Button
+        android:id="@+id/buttonMinus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textPrice"
+        app:layout_constraintEnd_toStartOf="@+id/buttonPluss"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textPrice" />
+
+    <Button
+        android:id="@+id/buttonPluss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        app:layout_constraintBaseline_toBaselineOf="@+id/buttonMinus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textDesc"
-        tools:text="Price" />
+        app:layout_constraintStart_toEndOf="@+id/buttonMinus" />
 
 </android.support.constraint.ConstraintLayout>
