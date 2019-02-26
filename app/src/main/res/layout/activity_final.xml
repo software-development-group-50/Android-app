@@ -34,7 +34,7 @@
         android:layout_marginEnd="99dp"
         android:layout_marginRight="99dp"
         android:layout_marginBottom="307dp"
-        android:text="Your order has been registerd! Ready for pickup in about 30 min"
+        android:text="Your order has been registered! Ready for pickup in about 30 min"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
