@@ -1,28 +1,71 @@
 package com.example.nigirifallsapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.v7.app.AppCompatActivity;
 
-public class Dish {
+// The class implements Parcelable because it is required to pass the ArrayList order.
+public class Dish extends AppCompatActivity implements Parcelable {
     int dishID;
     String name;
     String description;
     int price;
+    int minteger = 0;
 
-    public Dish(int dishID, String name, String description, int price){
+    public Dish(int dishID, String name, String description, int price) {
         this.dishID = dishID;
         this.name = name;
         this.description = description;
         this.price = price;
     }
-    public int getID(){
+
+    protected Dish(Parcel in) {
+        dishID = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        price = in.readInt();
+        minteger = in.readInt();
+    }
+
+    public static final Creator<Dish> CREATOR = new Creator<Dish>() {
+        @Override
+        public Dish createFromParcel(Parcel in) {
+            return new Dish(in);
+        }
+
+        @Override
+        public Dish[] newArray(int size) {
+            return new Dish[size];
+        }
+    };
+
+    public int getID() {
         return this.dishID;
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
-    public String getDesc(){
+
+    public String getDesc() {
         return this.description;
     }
-    public int getPrice(){
+
+    public int getPrice() {
         return this.price;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(dishID);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeInt(price);
+        dest.writeInt(minteger);
     }
 }
