@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
 
-    public static final String OrderIntent = "MainActivity.IntentString.Order";
+    public static final String OrderIntent = "MenuActivity.IntentString.Order";
     Button buttonCheckout;
     RequestQueue requestQueue;
     String stringFromPHP;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         /* Put this in the CheckoutActivity
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        String message = intent.getStringExtra(MenuActivity.EXTRA_MESSAGE);
          */
     }
 
