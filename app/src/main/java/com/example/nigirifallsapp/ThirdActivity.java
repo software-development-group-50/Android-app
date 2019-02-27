@@ -54,7 +54,7 @@ public class ThirdActivity extends AppCompatActivity {
 
     }
 
-    //remove or add items in checkout-menu
+    //go to remove or add items from checkout-menu
     public void onButtonBackToMenu(View view){
         Intent intent = new Intent(this, MenuActivity.class);
         //intent.putParcelableArrayListExtra(OrderIntent, (ArrayList<? extends Parcelable>) this.order);
