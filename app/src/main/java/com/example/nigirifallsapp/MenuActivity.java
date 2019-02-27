@@ -28,6 +28,8 @@ public class MenuActivity extends AppCompatActivity {
     String stringFromPHP;
     Menu menu;
     List<Dish> order;
+    //TextView showValue;
+    //int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class MenuActivity extends AppCompatActivity {
         this.sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
         this.buttonCheckout = findViewById(R.id.buttonCheckout);
         this.order = new ArrayList<>();
+        //showValue = (TextView) findViewById(R.id.counterValue);
     }
 
     // Function for sending a HTTP request to the PHP-script
@@ -76,6 +79,7 @@ public class MenuActivity extends AppCompatActivity {
             TextView textPrice = dishView.findViewById(R.id.textPrice);
             final Button buttonPluss = dishView.findViewById(R.id.buttonPluss);
             final Button buttonMinus = dishView.findViewById(R.id.buttonMinus);
+            final TextView intnum = dishView.findViewById(R.id.integer_number);
 
             textName.setText(tempDishList.get(i).getName());
             textDesc.setText(tempDishList.get(i).getDesc());
@@ -86,12 +90,22 @@ public class MenuActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     onAddDish(tempDishList.get(buttonPluss.getId()));
+                    //intnum.setText("counterValue");
+                    //showValue = (TextView) findViewById(R.id.counterValue);
+                    int count = Integer.valueOf(intnum.getText().toString());
+                    intnum.setText(Integer.toString(count + 1));
                 }
             });
             buttonMinus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onRemoveDish(tempDishList.get(buttonMinus.getId()));
+                    int count = Integer.valueOf(intnum.getText().toString());
+
+                    if(count>0) {
+                        onRemoveDish(tempDishList.get(buttonMinus.getId()));
+                        intnum.setText(Integer.toString(count - 1));
+
+                    }
                 }
             });
 
@@ -99,6 +113,22 @@ public class MenuActivity extends AppCompatActivity {
             insertPoint.addView(dishView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
         }
     }
+
+    /*
+    //function for increasing the counter of each dish by one
+    public void countUp(View view){
+        counter++;
+        showValue.setText(Integer.toString(counter));
+    }
+
+    //function for decreasing the counter of each dish by one
+    public void countDown(View view){
+        counter--;
+        showValue.setText(Integer.toString(counter));
+    }*/
+
+
+
 
     // Function for moving to the Checkout-activity, the ArrayList this.order is passed to the Checkout-activity
     public void onButtonCheckout(View view){
