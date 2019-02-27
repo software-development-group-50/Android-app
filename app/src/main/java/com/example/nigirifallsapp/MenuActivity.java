@@ -28,13 +28,8 @@ public class MenuActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     String stringFromPHP;
     Menu menu;
-<<<<<<< HEAD
-    List<Dish> order;
-    //TextView showValue;
-    //int counter = 0;
-=======
     Order order;
->>>>>>> master
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +38,7 @@ public class MenuActivity extends AppCompatActivity {
         this.requestQueue = Volley.newRequestQueue(this);
         this.sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
         this.buttonCheckout = findViewById(R.id.buttonCheckout);
-<<<<<<< HEAD
-        this.order = new ArrayList<>();
-        //showValue = (TextView) findViewById(R.id.counterValue);
-=======
-        //this.order = new ArrayList<>();
->>>>>>> master
+
     }
 
     // Function for sending a HTTP request to the PHP-script
