@@ -15,19 +15,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import java.util.ArrayList;
 import java.util.List;
-import android.os.Parcelable;
+import java.io.Serializable;
+
 
 
 public class MenuActivity extends AppCompatActivity {
 
     public static final String OrderIntent = "MenuActivity.IntentString.Order";
+    public static final String HashMapIntent = "MenuActivity.IntentString.HashMap";
     Button buttonCheckout;
     RequestQueue requestQueue;
     String stringFromPHP;
     Menu menu;
-    List<Dish> order;
+    Order order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class MenuActivity extends AppCompatActivity {
         this.requestQueue = Volley.newRequestQueue(this);
         this.sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
         this.buttonCheckout = findViewById(R.id.buttonCheckout);
-        this.order = new ArrayList<>();
+        //this.order = new ArrayList<>();
     }
 
     // Function for sending a HTTP request to the PHP-script
@@ -61,6 +62,7 @@ public class MenuActivity extends AppCompatActivity {
         stringFromPHP = response;
         this.menu = new Menu();
         menu.updateMenu(stringFromPHP);
+        this.order = new Order(menu, 1, 1);
         addMenuToView(this.menu);
     }
 
@@ -86,6 +88,7 @@ public class MenuActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     onAddDish(tempDishList.get(buttonPluss.getId()));
+
                 }
             });
             buttonMinus.setOnClickListener(new View.OnClickListener() {
@@ -103,18 +106,18 @@ public class MenuActivity extends AppCompatActivity {
     // Function for moving to the Checkout-activity, the ArrayList this.order is passed to the Checkout-activity
     public void onButtonCheckout(View view){
         Intent intent = new Intent(this, ThirdActivity.class);
-        intent.putParcelableArrayListExtra(OrderIntent, (ArrayList<? extends Parcelable>) this.order);
+        intent.putExtra(OrderIntent, this.order);
+        intent.putExtra(HashMapIntent, (Serializable) order.getNumOfEachDish());
         startActivity(intent);
     }
 
     private void onAddDish(Dish dish){
-        this.order.add(dish);
-        //buttonCheckout.setText(dish.getName());
+        this.order.addDishToOrder(dish);
     }
 
     private void onRemoveDish(Dish dish){
         try{
-            this.order.remove(dish);
+            this.order.removeDishInOrder(dish);
         } catch (Exception e){
 
         }
