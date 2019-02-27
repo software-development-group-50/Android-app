@@ -15,14 +15,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import java.util.ArrayList;
 import java.util.List;
-import android.os.Parcelable;
+import java.io.Serializable;
+
 
 
 public class MenuActivity extends AppCompatActivity {
 
     public static final String OrderIntent = "MenuActivity.IntentString.Order";
+    public static final String HashMapIntent = "MenuActivity.IntentString.HashMap";
     Button buttonCheckout;
     RequestQueue requestQueue;
     String stringFromPHP;
@@ -87,6 +88,7 @@ public class MenuActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     onAddDish(tempDishList.get(buttonPluss.getId()));
+
                 }
             });
             buttonMinus.setOnClickListener(new View.OnClickListener() {
@@ -104,14 +106,13 @@ public class MenuActivity extends AppCompatActivity {
     // Function for moving to the Checkout-activity, the ArrayList this.order is passed to the Checkout-activity
     public void onButtonCheckout(View view){
         Intent intent = new Intent(this, ThirdActivity.class);
-        //intent.putParcelableArrayListExtra(OrderIntent, (ArrayList<? extends Parcelable>) this.order);
         intent.putExtra(OrderIntent, this.order);
+        intent.putExtra(HashMapIntent, (Serializable) order.getNumOfEachDish());
         startActivity(intent);
     }
 
     private void onAddDish(Dish dish){
         this.order.addDishToOrder(dish);
-        //buttonCheckout.setText(dish.getName());
     }
 
     private void onRemoveDish(Dish dish){

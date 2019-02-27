@@ -2,24 +2,20 @@ package com.example.nigirifallsapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-//import org.jetbrains.annotations.NotNull;
 
 public class Order implements Parcelable {
-    private Integer customerID;
-    private Integer orderID;
+    private int customerID;
+    private int orderID;
     //private List<Dish> dishes = new ArrayList<>();
     private Map<Dish, Integer> numOfEachDish;
-    private int totalPrice;
+    //private int totalPrice;
 
     //public Order(@NotNull Menu menu, int orderID, int customerID){
     public Order(Menu menu, int orderID, int customerID){
-        numOfEachDish = new HashMap<Dish, Integer>();
         //dishes = menu.getDishList();
+        this.numOfEachDish = new HashMap<>();
         for (Dish dish : menu.getDishList()){
             numOfEachDish.put(dish, 0);
         }
@@ -27,18 +23,11 @@ public class Order implements Parcelable {
         this.customerID = customerID;
     }
 
+
     protected Order(Parcel in) {
-        if (in.readByte() == 0) {
-            customerID = null;
-        } else {
-            customerID = in.readInt();
-        }
-        if (in.readByte() == 0) {
-            orderID = null;
-        } else {
-            orderID = in.readInt();
-        }
-        totalPrice = in.readInt();
+        customerID = in.readInt();
+        orderID = in.readInt();
+        //totalPrice = in.readInt();
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -72,12 +61,12 @@ public class Order implements Parcelable {
 
             totPrice += dish.price * numOfEachDish.get(dish);
         }
-        this.totalPrice = totPrice;
+        //this.totalPrice = totPrice;
     }
 
-    public int getTotalPrice(){
+    /*public int getTotalPrice(){
         return this.totalPrice;
-    }
+    }*/
 
     public Map<Dish, Integer> getNumOfEachDish(){
         return this.numOfEachDish;
@@ -88,33 +77,23 @@ public class Order implements Parcelable {
         StringBuilder sb = new StringBuilder();
         sb.append(orderID).append("|")
                 .append(customerID).append("|");
-        for (Dish dish : numOfEachDish.keySet()){
-            sb.append(dish.dishID).append("|")
-                    .append(numOfEachDish.get(dish)).append("|");
+        //for (Dish dish : numOfEachDish.keySet()){
+        for (Map.Entry<Dish, Integer> entry : numOfEachDish.entrySet()){
+            sb.append(entry.getKey().dishID).append("|")
+                    .append(entry.getValue()).append("|");
         }
-        sb.append(totalPrice).append(";");
+        //sb.append(totalPrice).append(";");
         return sb.toString();
     }
 
     @Override
     public int describeContents() {
-        return 0;
+        return hashCode();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        if (customerID == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(customerID);
-        }
-        if (orderID == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(orderID);
-        }
-        dest.writeInt(totalPrice);
+        dest.writeInt(customerID);
+        dest.writeInt(orderID);
     }
 }
