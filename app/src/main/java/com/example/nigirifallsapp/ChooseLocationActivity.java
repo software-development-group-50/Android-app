@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class Main2Activity extends AppCompatActivity {
+public class ChooseLocationActivity extends AppCompatActivity {
 
     Button buttonToMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.choose_location_activity_layout);
         this.buttonToMenu = findViewById(R.id.button6);
     }
 

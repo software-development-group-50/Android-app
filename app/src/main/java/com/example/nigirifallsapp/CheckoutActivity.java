@@ -2,7 +2,6 @@ package com.example.nigirifallsapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,16 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
 
 
-public class ThirdActivity extends AppCompatActivity {
+public class CheckoutActivity extends AppCompatActivity {
 
-    public static final String OrderIntent = "ThirdActivity.IntentString.Order";
+    public static final String OrderIntent = "CheckoutActivity.IntentString.Order";
     List<Dish> order;
     Button buttonPlaceOrder;
     Button buttonBackToMenu;
@@ -28,7 +26,7 @@ public class ThirdActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_third);
+        setContentView(R.layout.checkout_layout);
         this.buttonPlaceOrder = findViewById(R.id.button3);
         this.buttonBackToMenu = findViewById(R.id.returN);
 
@@ -74,7 +72,7 @@ public class ThirdActivity extends AppCompatActivity {
 
     //transition to final state
     public void onButtonPlaceOrder(View view){
-        Intent intent = new Intent(this, FinalActivity.class);
+        Intent intent = new Intent(this, ConfirmationActivity.class);
         //intent.putParcelableArrayListExtra(OrderIntent, (ArrayList<? extends Parcelable>) this.order);
         startActivity(intent);
 

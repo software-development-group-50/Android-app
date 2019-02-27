@@ -15,10 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".dish_checkout"></activity>
-        <activity android:name=".Main2Activity" />
-        <activity android:name=".FinalActivity" />
-        <activity android:name=".ThirdActivity" />
+        <activity android:name=".ChooseLocationActivity" />
+        <activity android:name=".ConfirmationActivity" />
+        <activity android:name=".CheckoutActivity" />
         <activity android:name=".MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

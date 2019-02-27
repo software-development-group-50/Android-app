@@ -34,7 +34,7 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.menu_activity_layout);
         this.requestQueue = Volley.newRequestQueue(this);
         this.sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
         this.buttonCheckout = findViewById(R.id.buttonCheckout);
@@ -132,7 +132,7 @@ public class MenuActivity extends AppCompatActivity {
 
     // Function for moving to the Checkout-activity, the ArrayList this.order is passed to the Checkout-activity
     public void onButtonCheckout(View view){
-        Intent intent = new Intent(this, ThirdActivity.class);
+        Intent intent = new Intent(this, CheckoutActivity.class);
         intent.putExtra(OrderIntent, this.order);
         intent.putExtra(HashMapIntent, (Serializable) order.getNumOfEachDish());
         startActivity(intent);
