@@ -5,36 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/textDesc"
-        android:layout_width="210dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.118"
+        android:layout_width="222dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginTop="56dp"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textName"
         tools:text="Description" />
 
     <TextView
         android:id="@+id/textName"
-        android:layout_width="130dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textPrice"
-        app:layout_constraintHorizontal_bias="0.188"
+        android:layout_width="213dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="39dp"
         tools:text="Name" />
 
     <TextView
@@ -42,26 +36,28 @@
         android:layout_width="58dp"
         android:layout_height="38dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="96dp"
-        android:layout_marginRight="96dp"
-        android:textSize="24sp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginRight="140dp"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@+id/textName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.888"
+        app:layout_constraintVertical_bias="0.638"
         tools:text="Price" />
 
     <Button
         android:id="@+id/buttonMinus"
-        android:layout_width="49dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="112dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:onClick="decreaseInteger"
         android:text="-"
+        android:background="@color/counterButton"
         app:layout_constraintStart_toEndOf="@+id/textDesc"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textPrice" />
 
     <TextView
         android:id="@+id/integer_number"
@@ -69,25 +65,37 @@
         android:layout_height="29dp"
         android:layout_marginStart="17dp"
         android:layout_marginLeft="17dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:text="0"
+        android:textColor="@color/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/textDesc"
         app:layout_constraintEnd_toStartOf="@+id/buttonPluss"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.291"
         app:layout_constraintStart_toEndOf="@+id/buttonMinus"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textPrice"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/buttonPluss"
-        android:layout_width="49dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="112dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="21dp"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
+        android:layout_marginBottom="8dp"
         android:onClick="increaseInteger"
         android:text="+"
+        android:background="@color/counterButton"
+        app:layout_constraintBottom_toBottomOf="@+id/textDesc"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.744"
+        app:layout_constraintStart_toEndOf="@+id/buttonMinus"
+        app:layout_constraintTop_toBottomOf="@+id/textPrice"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>
