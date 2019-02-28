@@ -2,27 +2,26 @@ package com.example.nigirifallsapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Order implements Parcelable {
     private int customerID;
     private int orderID;
-    //private List<Dish> dishes = new ArrayList<>();
     private Map<Dish, Integer> numOfEachDish;
     //private int totalPrice;
 
     //public Order(@NotNull Menu menu, int orderID, int customerID){
-    public Order(Menu menu, int orderID, int customerID){
+    public Order(Menu menu, int orderID, int customerID) {
         //dishes = menu.getDishList();
         this.numOfEachDish = new HashMap<>();
-        for (Dish dish : menu.getDishList()){
+        for (Dish dish : menu.getDishList()) {
             numOfEachDish.put(dish, 0);
         }
         this.orderID = orderID;
         this.customerID = customerID;
     }
-
 
     protected Order(Parcel in) {
         customerID = in.readInt();
@@ -42,22 +41,22 @@ public class Order implements Parcelable {
         }
     };
 
-    public void addDishToOrder(Dish newDish){
+    public void addDishToOrder(Dish newDish) {
         int count = numOfEachDish.get(newDish);
         this.numOfEachDish.replace(newDish, count + 1);
     }
 
-    public void removeDishInOrder(Dish newDish){
+    public void removeDishInOrder(Dish newDish) {
         int count = numOfEachDish.get(newDish);
-        if (count > 0){
+        if (count > 0) {
             this.numOfEachDish.replace(newDish, count - 1);
         }
 
     }
 
-    public void updateTotalPrice(){
+    public void updateTotalPrice() {
         int totPrice = 0;
-        for (Dish dish : numOfEachDish.keySet()){
+        for (Dish dish : numOfEachDish.keySet()) {
 
             totPrice += dish.price * numOfEachDish.get(dish);
         }
@@ -68,17 +67,17 @@ public class Order implements Parcelable {
         return this.totalPrice;
     }*/
 
-    public Map<Dish, Integer> getNumOfEachDish(){
+    public Map<Dish, Integer> getNumOfEachDish() {
         return this.numOfEachDish;
     }
 
-    //return "orderID|customerID|dishID1|numOfDish1|dishID2|numOfDish2|......|numOfDishN|totalPrice;
-    public String getOrder(){
+    //return "http://folk.ntnu.no/jennyjy/addorder.php/?order=dishID1|numOfDish1|dishID2|numOfDish2|......|numOfDishN;
+    public String getOrder() {
         StringBuilder sb = new StringBuilder();
-        sb.append(orderID).append("|")
-                .append(customerID).append("|");
+        //sb.append(orderID).append("|")
+        //        .append(customerID).append("|");
         //for (Dish dish : numOfEachDish.keySet()){
-        for (Map.Entry<Dish, Integer> entry : numOfEachDish.entrySet()){
+        for (Map.Entry<Dish, Integer> entry : numOfEachDish.entrySet()) {
             sb.append(entry.getKey().dishID).append("|")
                     .append(entry.getValue()).append("|");
         }
