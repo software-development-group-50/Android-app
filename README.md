@@ -18,6 +18,28 @@ Download the zip file for the project and extract it in your folder of choice fo
 
 Click on run and when you get to the select target screen, either set up an emulator or connect an Android device both with API 26 or higher. Run the application on your target of choice and the application should be running.
 
+## Built with
+
+* Android Studio - Android development enviroment
+* PHP & SQL - Database management
+
+## Version
+
+* 0.1 Released 01/03/2018 - Release notes
+
+## Authored by
+
+* Magnus Tideman
+* Jenny Yu
+* Theodor Lopez Holmsen
+* Ingrid Fotland Aaseng
+* Petter Hoem Sletsjøe
+* Johan Nicolaisen Brun
+
+## Thanks to
+
+Sabrura for inspiration and sushi names/descriptions.
+
 
 
 
