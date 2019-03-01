@@ -22,6 +22,7 @@
             android:text="Checkout"
             android:textAlignment="center"
             android:textSize="40sp"
+            android:textColor="@color/textColorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -35,6 +36,7 @@
         android:layout_marginBottom="36dp"
         android:onClick="onButtonPlaceOrder"
         android:text="Place Order"
+        android:background="@color/counterButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -49,6 +51,7 @@
         android:layout_marginBottom="10dp"
         android:onClick="onButtonBackToMenu"
         android:text="Remove or Add items"
+        android:background="@color/colorSecondary"
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
