@@ -2,6 +2,7 @@ package com.example.nigirifallsapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,12 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 
 import java.util.List;
 import java.util.HashMap;
@@ -25,6 +28,7 @@ import java.util.Map;
 public class CheckoutActivity extends AppCompatActivity {
 
     public static final String OrderIntent = "CheckoutActivity.IntentString.Order";
+
     Button buttonPlaceOrder;
     Button buttonBackToMenu;
     RequestQueue requestQueue;
@@ -51,16 +55,19 @@ public class CheckoutActivity extends AppCompatActivity {
         for (Map.Entry<Dish, Integer> map : numOfEachDish.entrySet()) {
             if (map.getValue() != 0) {
                 LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View dishView = layoutInflater.inflate(R.layout.dish_layout, null);
+                View dishView = layoutInflater.inflate(R.layout.activity_dish_checkout, null);
 
                 TextView textName = dishView.findViewById(R.id.textName);
-                TextView textDesc = dishView.findViewById(R.id.textDesc);
+                //TextView textDesc = dishView.findViewById(R.id.textDesc);
+                TextView textQuantity = dishView.findViewById(R.id.textView3);
                 TextView textPrice = dishView.findViewById(R.id.textPrice);
+                TextView xTimes = dishView.findViewById(R.id.textView8);
 
                 Dish dish = map.getKey();
                 int price = dish.getPrice();
-                textName.setText(dish.getName());
-                textPrice.setText(map.getValue().toString()); // fix
+                textName.setText(dish.getName()); //textQuantity.setText(map.getValue().toString());
+                textPrice.setText(map.getValue().toString(price)); // textPrice.setText(map.getValue().toString(price))
+                textQuantity.setText(map.getValue().toString());
 
 
                 ViewGroup insertPoint = (ViewGroup) findViewById(R.id.linearLayout);
