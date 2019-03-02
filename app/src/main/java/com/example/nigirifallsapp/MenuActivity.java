@@ -83,7 +83,7 @@ public class MenuActivity extends AppCompatActivity {
 
             textName.setText(tempDishList.get(i).getName());
             textDesc.setText(tempDishList.get(i).getDesc());
-            textPrice.setText(Integer.toString(tempDishList.get(i).getPrice()));
+            textPrice.setText(Integer.toString(tempDishList.get(i).getPrice()) + ",-");
             buttonPluss.setId(i);
             buttonMinus.setId(i);
             buttonPluss.setOnClickListener(new View.OnClickListener() {
