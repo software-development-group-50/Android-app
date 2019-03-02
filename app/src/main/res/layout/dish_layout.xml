@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:text="0"
         android:textColor="@color/textColorPrimary"
-        app:layout_constraintBaseline_toBaselineOf="@+id/buttonPluss"
+        app:layout_constraintBaseline_toBaselineOf="@+id/buttonMinus"
         app:layout_constraintEnd_toStartOf="@+id/buttonPluss"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonMinus" />
@@ -80,10 +80,11 @@
         android:minWidth="34dp"
         android:onClick="decreaseInteger"
         android:text="-"
-        app:layout_constraintBaseline_toBaselineOf="@+id/buttonPluss"
+        app:layout_constraintBottom_toBottomOf="@+id/textDesc"
         app:layout_constraintEnd_toStartOf="@+id/integer_number"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textDesc" />
+        app:layout_constraintStart_toEndOf="@+id/textDesc"
+        app:layout_constraintTop_toTopOf="@+id/textDesc" />
 
     <Button
         android:id="@+id/buttonPluss"
@@ -97,7 +98,7 @@
         android:minWidth="34dp"
         android:onClick="increaseInteger"
         android:text="+"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textDesc"
+        app:layout_constraintBaseline_toBaselineOf="@+id/buttonMinus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/integer_number" />
