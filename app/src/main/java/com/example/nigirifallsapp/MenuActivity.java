@@ -83,7 +83,7 @@ public class MenuActivity extends AppCompatActivity {
 
             textName.setText(tempDishList.get(i).getName());
             textDesc.setText(tempDishList.get(i).getDesc());
-            textPrice.setText(Integer.toString(tempDishList.get(i).getPrice()));
+            textPrice.setText(Integer.toString(tempDishList.get(i).getPrice()) + ",-");
             buttonPluss.setId(i);
             buttonMinus.setId(i);
             buttonPluss.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +110,8 @@ public class MenuActivity extends AppCompatActivity {
             });
 
             ViewGroup insertPoint = (ViewGroup) findViewById(R.id.linearLayout);
-            insertPoint.addView(dishView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+            insertPoint.addView(dishView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+            // The -1 index specifies that the element is added LAST to the ScrollView
         }
     }
 
