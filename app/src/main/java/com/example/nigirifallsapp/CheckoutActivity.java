@@ -71,7 +71,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
 
                 ViewGroup insertPoint = (ViewGroup) findViewById(R.id.linearLayout);
-                insertPoint.addView(dishView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+                insertPoint.addView(dishView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+                // The -1 index specifies that the element is added LAST to the ScrollView
             }
         }
     }
