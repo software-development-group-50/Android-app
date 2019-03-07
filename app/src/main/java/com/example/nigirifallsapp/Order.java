@@ -43,13 +43,15 @@ public class Order implements Parcelable {
 
     public void addDishToOrder(Dish newDish) {
         int count = numOfEachDish.get(newDish);
-        this.numOfEachDish.replace(newDish, count + 1);
+        this.numOfEachDish.remove(newDish);
+        this.numOfEachDish.put(newDish, count + 1);
     }
 
     public void removeDishInOrder(Dish newDish) {
         int count = numOfEachDish.get(newDish);
         if (count > 0) {
-            this.numOfEachDish.replace(newDish, count - 1);
+            this.numOfEachDish.remove(newDish);
+            this.numOfEachDish.put(newDish, count - 1);
         }
 
     }
