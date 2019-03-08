@@ -78,7 +78,6 @@
         android:layout_marginRight="4dp"
         android:background="@color/counterButton"
         android:minWidth="34dp"
-        android:onClick="decreaseInteger"
         android:text="-"
         app:layout_constraintBottom_toBottomOf="@+id/textDesc"
         app:layout_constraintEnd_toStartOf="@+id/integer_number"
