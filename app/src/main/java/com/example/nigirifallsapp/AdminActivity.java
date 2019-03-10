@@ -41,16 +41,16 @@ public class AdminActivity extends AppCompatActivity {
         this.buttonConfirm = findViewById(R.id.buttonConfirm);
         this.buttonFinish = findViewById(R.id.buttonFinish);
         this.linearLayoutAdmin = findViewById(R.id.linearLayoutAdmin);
-        this.sendRequest("http://folk.ntnu.no/magnuti/getallorders.php");
+        this.sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
     }
 
     // Function for sending a HTTP request to the PHP-script
-    private void sendRequest(String url) {
+    private void sendRequestGetAllOrders(String url) {
         // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                onActualResponse(response); // The extra function is needed because of the scope of the @Override function
+                onActualResponseGetAllOrders(response); // The extra function is needed because of the scope of the function
             }
         }, new Response.ErrorListener() {
             @Override
@@ -62,7 +62,7 @@ public class AdminActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void onActualResponse(String response){
+    private void onActualResponseGetAllOrders(String response){
         List<OrderInAdmin> orderList = new ArrayList<>();
         String[] arrayWithStringOrders = response.split(";");
         for (String elementsInStringArray : arrayWithStringOrders) {
@@ -72,7 +72,31 @@ public class AdminActivity extends AppCompatActivity {
         addMenuToView(orderList);
     }
 
-    // Function for addin..
+    // Function for sending a HTTP request to the PHP-script
+    private void sendRequestChangeStatus(String url) {
+        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                onActualResponseChangeStatus(response); // The extra function is needed because of the scope of the function
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(stringRequest);
+    }
+
+    private void onActualResponseChangeStatus(String response){
+        // Reloads all the orders
+        this.linearLayoutAdmin.removeAllViews();
+        sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
+    }
+
+    // Function for adding all orders to the ScrollView and adding ClickListeners to them
     private void addMenuToView(List<OrderInAdmin> orderInAdminList){ //Parameter Menu-class
         for (int i = 0; i < orderInAdminList.size(); i++){
             LayoutInflater outerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -117,5 +141,17 @@ public class AdminActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void onButtonConfirm(View view){
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php?status=Confirm&orderid=";
+        url += Integer.toString(this.chosenDishID);
+        this.sendRequestChangeStatus(url);
+    }
+
+    public void onButtonFinish(View view){
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php?status=Finish&orderid=";
+        url += Integer.toString(this.chosenDishID);
+        this.sendRequestChangeStatus(url);
     }
 }
