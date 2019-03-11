@@ -89,23 +89,24 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void onActualResponseChangeStatus(String response){
-        // Reloads all the orders
-        this.linearLayoutAdmin.removeAllViews();
+        // Reloads all the orders, but not the text Orders.
+        this.linearLayoutAdmin.removeViews(1, linearLayoutAdmin.getChildCount() - 1);
         sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
     }
 
     // Function for adding all orders to the ScrollView and adding ClickListeners to them
-    private void addMenuToView(List<OrderInAdmin> orderInAdminList){ //Parameter Menu-class
-        for (int i = 0; i < orderInAdminList.size(); i++){
+    private void addMenuToView(List<OrderInAdmin> orderInAdminList){
+        // Starts at 1 so the text Orders is not affected.
+        for (int i = 1; i < orderInAdminList.size(); i++){
             LayoutInflater outerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View orderInAdminView = outerLayoutInflater.inflate(R.layout.order_in_admin_layout, null);
-            int orderid = Integer.valueOf(orderInAdminList.get(i).getOrderId());
+            final int orderid = Integer.valueOf(orderInAdminList.get(i).getOrderId().trim());
 
             final TextView textOrders = orderInAdminView.findViewById(R.id.textOrderID);
             final TextView textPickUpTime = orderInAdminView.findViewById(R.id.textPickUpTime);
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
 
-            textOrders.setText(orderid);
+            textOrders.setText(orderInAdminList.get(i).getOrderId());
             textPickUpTime.setText(orderInAdminList.get(i).getPickUpTime());
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
@@ -129,7 +130,7 @@ public class AdminActivity extends AppCompatActivity {
 
             final LinearLayout linearLayoutOrder = findViewById(R.id.linearLayoutOrder);
             this.defaultColor = linearLayoutOrder.getSolidColor(); // I don´t know the default color in Android Studio, so it is fetched here.
-            linearLayoutOrder.setId(orderid); // This line is required so that not all orders are placed into the same linearLayoutOrder.
+            linearLayoutOrder.setId(i); // This line is required so that not all orders are placed into the same linearLayoutOrder.
             final int linearLayoutOrderIndex = linearLayoutOrder.getId();
 
             this.linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setOnClickListener(new View.OnClickListener() {
@@ -138,21 +139,27 @@ public class AdminActivity extends AppCompatActivity {
                     linearLayoutAdmin.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
                     linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
                     chosenDishIndex = linearLayoutOrderIndex;
-                    chosenDishID = 0;
+                    chosenDishID = orderid;
                 }
             });
         }
     }
 
+    public void onButtonNew(View view){
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=New&orderid=";
+        url += Integer.toString(this.chosenDishID);
+        this.sendRequestChangeStatus(url);
+    }
+
     public void onButtonConfirm(View view){
         String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Confirm&orderid=";
-        url += Integer.toString(this.chosenDishIndex);
+        url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
 
     public void onButtonFinish(View view){
         String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Finish&orderid=";
-        url += Integer.toString(this.chosenDishIndex);
+        url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
 }
