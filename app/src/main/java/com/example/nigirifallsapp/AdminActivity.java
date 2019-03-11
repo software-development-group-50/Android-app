@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +27,7 @@ public class AdminActivity extends AppCompatActivity {
     Button buttonConfirm;
     Button buttonFinish;
     LinearLayout linearLayoutAdmin;
+    private int chosenDishIndex;
     private int chosenDishID;
     private int defaultColor;
 
@@ -101,12 +99,13 @@ public class AdminActivity extends AppCompatActivity {
         for (int i = 0; i < orderInAdminList.size(); i++){
             LayoutInflater outerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View orderInAdminView = outerLayoutInflater.inflate(R.layout.order_in_admin_layout, null);
+            int orderid = Integer.valueOf(orderInAdminList.get(i).getOrderId());
 
             final TextView textOrders = orderInAdminView.findViewById(R.id.textOrderID);
             final TextView textPickUpTime = orderInAdminView.findViewById(R.id.textPickUpTime);
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
 
-            textOrders.setText(orderInAdminList.get(i).getOrderId());
+            textOrders.setText(orderid);
             textPickUpTime.setText(orderInAdminList.get(i).getPickUpTime());
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
@@ -123,35 +122,37 @@ public class AdminActivity extends AppCompatActivity {
 
                 textDishName.setText(orderInAdminList.get(i).getDishList().get(k));
                 textQuantity.setText(orderInAdminList.get(i).getDishList().get(k + 1));
+
                 ViewGroup innerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutOrder);
                 innerInsertPoint.addView(dishInOrderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
             }
 
             final LinearLayout linearLayoutOrder = findViewById(R.id.linearLayoutOrder);
             this.defaultColor = linearLayoutOrder.getSolidColor(); // I don´t know the default color in Android Studio, so it is fetched here.
-            linearLayoutOrder.setId(i); // This line is required so that not all orders are placed into the same linearLayoutOrder.
-            final int linearLayoutOrderId = linearLayoutOrder.getId();
+            linearLayoutOrder.setId(orderid); // This line is required so that not all orders are placed into the same linearLayoutOrder.
+            final int linearLayoutOrderIndex = linearLayoutOrder.getId();
 
-            this.linearLayoutAdmin.getChildAt(linearLayoutOrderId).setOnClickListener(new View.OnClickListener() {
+            this.linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    linearLayoutAdmin.getChildAt(chosenDishID).setBackgroundColor(defaultColor);
-                    linearLayoutAdmin.getChildAt(linearLayoutOrderId).setBackgroundColor(Color.GRAY);
-                    chosenDishID = linearLayoutOrderId;
+                    linearLayoutAdmin.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
+                    linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
+                    chosenDishIndex = linearLayoutOrderIndex;
+                    chosenDishID = 0;
                 }
             });
         }
     }
 
     public void onButtonConfirm(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php?status=Confirm&orderid=";
-        url += Integer.toString(this.chosenDishID);
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Confirm&orderid=";
+        url += Integer.toString(this.chosenDishIndex);
         this.sendRequestChangeStatus(url);
     }
 
     public void onButtonFinish(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php?status=Finish&orderid=";
-        url += Integer.toString(this.chosenDishID);
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Finish&orderid=";
+        url += Integer.toString(this.chosenDishIndex);
         this.sendRequestChangeStatus(url);
     }
 }
