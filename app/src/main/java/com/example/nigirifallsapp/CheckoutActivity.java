@@ -34,6 +34,7 @@ public class CheckoutActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     //Order order;
     Map<Dish, Integer> numOfEachDish;
+    Integer orderID;
 
 
     @Override
@@ -103,13 +104,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
     //transition to final state
     public void onButtonPlaceOrder(View view) {
-        String url = "http://folk.ntnu.no/jennyjy/addorder.php/?order="; // Change URL
+        String url = "http://folk.ntnu.no/magnuti/addorder.php/?order="; // Change URL
         url += orderHashMapToString();
         sendRequest(url);
-        Intent intent = new Intent(this, ConfirmationActivity.class);
-        //intent.putParcelableArrayListExtra(OrderIntent, (ArrayList<? extends Parcelable>) this.order);
-        startActivity(intent);
-
     }
 
     // Function for sending a HTTP request to the PHP-script
@@ -131,7 +128,9 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void onActualResponse(String response) {
-
+        Intent intent = new Intent(this, ConfirmationActivity.class);
+        String orderID = "OrderID";
+        intent.putExtra(orderID, response);
+        startActivity(intent);
     }
-
 }
