@@ -97,7 +97,7 @@ public class AdminActivity extends AppCompatActivity {
     // Function for adding all orders to the ScrollView and adding ClickListeners to them
     private void addMenuToView(List<OrderInAdmin> orderInAdminList){
         // Starts at 1 so the text Orders is not affected.
-        for (int i = 1; i < orderInAdminList.size(); i++){
+        for (int i = 0; i < orderInAdminList.size(); i++){
             LayoutInflater outerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View orderInAdminView = outerLayoutInflater.inflate(R.layout.order_in_admin_layout, null);
             final int orderid = Integer.valueOf(orderInAdminList.get(i).getOrderId().trim());
@@ -130,7 +130,8 @@ public class AdminActivity extends AppCompatActivity {
 
             final LinearLayout linearLayoutOrder = findViewById(R.id.linearLayoutOrder);
             this.defaultColor = linearLayoutOrder.getSolidColor(); // I don´t know the default color in Android Studio, so it is fetched here.
-            linearLayoutOrder.setId(i); // This line is required so that not all orders are placed into the same linearLayoutOrder.
+            // The +1 is needed because the text Orders has index 0, therefore, the getChildAt is indexed +1.
+            linearLayoutOrder.setId(i + 1); // This line is required so that not all orders are placed into the same linearLayoutOrder.
             final int linearLayoutOrderIndex = linearLayoutOrder.getId();
 
             this.linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setOnClickListener(new View.OnClickListener() {
