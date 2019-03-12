@@ -128,7 +128,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void onActualResponse(String response) {
-        Intent intent = new Intent(this, ConfirmationActivity.class);
+        Intent intent = new Intent(this, PickupActivity.class);
         String orderID = "OrderID";
         intent.putExtra(orderID, response);
         startActivity(intent);
