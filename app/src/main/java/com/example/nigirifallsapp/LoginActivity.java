@@ -35,9 +35,9 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < 1000; i++){
+                //for (int i = 0; i < 1000; i++){
                     validate(phoneNr.getText().toString(), password.getText().toString());
-                }
+                //}
             }
         });
 
@@ -72,8 +72,12 @@ public class LoginActivity extends AppCompatActivity {
         error_nr.setText("");
         error_pw.setText("");
 
+        if(number.equals("911") && password.equals("admin")){
+            Intent adminIntent = new Intent(this, AdminActivity.class);
+            startActivity(adminIntent);
+        }
         if ((number.length() == 8) && (password.equals("sushi"))) {
-            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+            Intent intent = new Intent(this, MenuActivity.class);
             startActivity(intent);
 
         }
