@@ -8,6 +8,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.android.volley.RequestQueue;
+
 public class RegisterActivity extends AppCompatActivity {
 
     Button registerBtn;
@@ -17,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText confirm;
     TextView error_confirm;
     TextView error_nr;
+    RequestQueue requestQueue;
 
 
     @Override
@@ -31,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         confirm = (EditText) findViewById(R.id.editText4);
         error_confirm = (TextView) findViewById(R.id.error_confirm);
         error_nr = (TextView) findViewById(R.id.error_nr);
+        this.requestQueue = Volley.newRequestQueue(this);
 
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -43,23 +52,49 @@ public class RegisterActivity extends AppCompatActivity {
 
     //hvis navn, nummer, passord og bekreft passord er fylt ut, så vil registrer knappen få funksjonalitet og vi kan gå videre
     public void validate(String name, String number, String password, String confirm) {
-
         error_confirm.setText("");
         error_nr.setText("");
         if ((name.length() > 0) && (number.length() == 8) && (password.length() > 0) && (confirm.equals(password))) {
-            Intent intent = new Intent(RegisterActivity.this, MenuActivity.class);
-            startActivity(intent);
+            String url = "https://org.ntnu.no/nigiriapp/register.php/?userID=";
+            url += number;
+            url += "&password=";
+            url += password;
+            url += "&name=";
+            url += name;
+            sendRequest(url);
         } else {
             if (!confirm.equals(password)) {
-                error_confirm.setText("Error! Confirm password does not match password");
-
+                error_confirm.setText("Error 203: Confirm password does not match password");
             }
 
             if (number.length() != 8) {
-                error_nr.setText("Invalid number! A number must consist of 8 digits");
-
+                error_nr.setText("Invalid number. A number must consist of 8 digits.");
             }
         }
+    }
 
+    // Function for sending a HTTP request to the PHP-script
+    private void sendRequest(String url) {
+        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                onActualResponse(response); // The extra function is needed because of the scope of the @Override function
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
+    private void onActualResponse(String response){
+        if(response.trim().equals("1")){
+            Intent menuIntent = new Intent(this, MenuActivity.class);
+            startActivity(menuIntent);
+        } else {
+            error_nr.setText(response);
+        }
     }
 }
