@@ -12,7 +12,6 @@ import android.widget.TimePicker;
 
 public class PickupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
-    Button returnBtn;
     Button placeOrderBtn;
 
 
@@ -21,7 +20,6 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickup);
 
-        this.returnBtn = findViewById(R.id.return_);
         this.placeOrderBtn = findViewById(R.id.place_order);
         Button chooseTime = (Button) findViewById(R.id.button);
         chooseTime.setOnClickListener(new View.OnClickListener() {
@@ -34,10 +32,10 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
 
     }
 
-
+    @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int min){
-        TextView textview = (TextView) findViewById(R.id.textView);
-        textview.setText("Hour: " + hourOfDay + "Minute: " + min);
+        TextView textView = (TextView) findViewById(R.id.textView10);
+        textView.setText("Time:     " + hourOfDay + ":" + min);
 
     }
 
@@ -45,11 +43,6 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         Intent intent = new Intent(this, ConfirmationActivity.class);
         startActivity(intent);
 
-    }
-
-    public void onButtonReturn(View view){
-        Intent intent = new Intent(this, CheckoutActivity.class);
-        startActivity(intent);
     }
 
 }
