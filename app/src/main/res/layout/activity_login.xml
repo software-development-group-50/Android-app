@@ -16,6 +16,7 @@
         android:layout_marginEnd="162dp"
         android:layout_marginRight="162dp"
         android:layout_marginBottom="41dp"
+        android:background="@color/counterButton"
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +33,7 @@
         android:layout_marginEnd="163dp"
         android:layout_marginRight="163dp"
         android:layout_marginBottom="116dp"
+        android:background="@color/counterButton"
         android:text="Login"
         app:layout_constraintBottom_toTopOf="@+id/registered_login"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,8 +42,8 @@
 
     <TextView
         android:id="@+id/Header"
-        android:layout_width="99dp"
-        android:layout_height="61dp"
+        android:layout_width="131dp"
+        android:layout_height="57dp"
         android:layout_marginStart="188dp"
         android:layout_marginLeft="188dp"
         android:layout_marginTop="16dp"
@@ -51,8 +53,10 @@
         android:text="Login"
         android:textColor="@color/textColorPrimary"
         android:textSize="40sp"
+        android:typeface="serif"
         app:layout_constraintBottom_toTopOf="@+id/nr_login"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,7 +69,8 @@
         android:layout_marginTop="116dp"
         android:layout_marginEnd="146dp"
         android:layout_marginRight="146dp"
-        android:text="Not yet registered?"
+        android:text="Not yet registered?\n"
+        android:textColor="@color/textColorDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_login" />
@@ -80,6 +85,7 @@
         android:layout_marginEnd="216dp"
         android:layout_marginRight="216dp"
         android:text="Phone number:"
+        android:textColor="@color/textColorDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Header" />
@@ -94,6 +100,7 @@
         android:layout_marginEnd="246dp"
         android:layout_marginRight="246dp"
         android:text="Password:"
+        android:textColor="@color/textColorDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_nr" />
