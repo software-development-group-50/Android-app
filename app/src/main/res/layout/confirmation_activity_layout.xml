@@ -17,6 +17,7 @@
         android:layout_marginRight="32dp"
         android:gravity="center"
         android:text="Success"
+        android:typeface="serif"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
@@ -44,8 +45,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="71dp"
+        android:layout_width="183dp"
+        android:layout_height="103dp"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginEnd="32dp"
@@ -55,7 +56,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@android:drawable/ic_menu_recent_history" />
+        app:srcCompat="@mipmap/logo_foreground" />
 
     <TextView
         android:id="@+id/textView4"

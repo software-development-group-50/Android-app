@@ -20,6 +20,7 @@
 
         <TextView
             android:text="Checkout"
+            android:typeface="serif"
             android:textAlignment="center"
             android:textSize="40sp"
             android:textColor="@color/textColorPrimary"

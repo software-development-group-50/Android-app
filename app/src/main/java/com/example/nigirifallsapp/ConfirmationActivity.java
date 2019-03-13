@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.graphics.Color;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+
 public class ConfirmationActivity extends AppCompatActivity {
     private String orderID = "Sorry something went wrong";
     private String statusText = "Order Status: ";
@@ -20,6 +22,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     private String orderStatus = "Error";
     private String pickUpTime = "68:23:20";
     RequestQueue requestQueue;
+    Color NYELLOW = new Color();
 
     Thread thread = new Thread() {
         @Override
@@ -50,15 +53,18 @@ public class ConfirmationActivity extends AppCompatActivity {
         this.requestQueue = Volley.newRequestQueue(this);
 
         TextView textView2 = findViewById(R.id.textView2);
-        String text = "Your order has been registered! Ready for pickup in about 30 min. \n\nPickup reference: ";
-        text += getOrderID();
+        String text = "Your order has been registered! Ready for pickup in about 30 min. \n\n\nYour pickup reference is: \n ";
+        text += getOrderID() +"\n\n\n\n";
+        textView2.setTextColor(getResources().getColor(R.color.textColorDark));
         textView2.setText(text);
+        textView2.setTextSize(18);
 
         //Order status
         this.statusTextView = findViewById(R.id.textView4);
-        String status = statusText + "New";
+        String status = statusText + "Waiting";
         statusTextView.setText(status);
-        statusTextView.setBackgroundColor(Color.YELLOW);
+        statusTextView.setTextColor(getResources().getColor(R.color.waitingColor));
+        statusTextView.setTextSize(24);
         thread.start();
     }
 
@@ -118,17 +124,17 @@ public class ConfirmationActivity extends AppCompatActivity {
         statusTextView.setText(status);
 
         switch (orderStatus) {
-            case "New":
-                statusTextView.setBackgroundColor(Color.MAGENTA);
+            case "Waiting":
+                statusTextView.setTextColor(getResources().getColor(R.color.waitingColor));
                 break;
-            case "Confirm":
-                statusTextView.setBackgroundColor(Color.GREEN);
+            case "Confirmed":
+                statusTextView.setTextColor(getResources().getColor(R.color.confirmedColor));
                 break;
-            case "Finish":
-                statusTextView.setBackgroundColor(Color.DKGRAY);
+            case "Pickup-ready":
+                statusTextView.setTextColor(getResources().getColor(R.color.pickupColor));
                 break;
             case "Canceled":
-                statusTextView.setBackgroundColor(Color.RED);
+                statusTextView.setTextColor(getResources().getColor(R.color.canceledColor));
                 break;
         }
     }

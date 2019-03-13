@@ -6,5 +6,10 @@
     <color name="textColorPrimary">#0b083d</color>
     <color name="background">#FFFBEA</color>
     <color name="counterButton">#F6C8C2</color>
+    <color name="waitingColor">#efc251</color>
+    <color name="confirmedColor">#4e79d8</color>
+    <color name="pickupColor">#008080</color>
+    <color name="canceledColor">#cd5555</color>
+    <color name="textColorDark">#4b4d51</color>
 
 </resources>

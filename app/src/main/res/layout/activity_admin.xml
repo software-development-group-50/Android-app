@@ -62,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Orders"
+                android:typeface="serif"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="40sp" />
         </LinearLayout>
