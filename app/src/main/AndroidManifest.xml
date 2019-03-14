@@ -15,14 +15,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AdminActivity"/>
-        <activity android:name=".RegisterActivity" />
-
+        <activity android:name=".AdminActivity"
+            android:parentActivityName=".LoginActivity">
+        </activity>
+        <activity android:name=".RegisterActivity"
+            android:noHistory="true"
+            android:parentActivityName=".LoginActivity">
+        </activity>
         <activity android:name=".ChooseLocationActivity" />
-        <activity android:name=".ConfirmationActivity" />
-        <activity android:name=".CheckoutActivity" />
-        <activity android:name=".MenuActivity"/>
-        <activity android:name=".LoginActivity" >
+        <activity android:name=".ConfirmationActivity"
+            android:parentActivityName=".MenuActivity">
+        </activity>
+        <activity android:name=".CheckoutActivity"
+            android:noHistory="true"
+            android:parentActivityName=".MenuActivity">
+        </activity>
+        <activity android:name=".MenuActivity"
+            android:parentActivityName=".LoginActivity">
+        </activity>
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
