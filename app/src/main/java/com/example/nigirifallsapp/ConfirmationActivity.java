@@ -16,13 +16,15 @@ import com.android.volley.toolbox.Volley;
 
 
 public class ConfirmationActivity extends AppCompatActivity {
-    private String orderID = "Sorry something went wrong";
+    private String orderID = "Sorry, something went wrong";
     private String statusText = "Order Status: ";
     private TextView statusTextView;
     private String orderStatus = "Error";
     private String pickUpTime = "68:23:20";
     RequestQueue requestQueue;
     Color NYELLOW = new Color();
+    private int hourOfDay;
+    private int min;
 
     Thread thread = new Thread() {
         @Override
@@ -51,6 +53,10 @@ public class ConfirmationActivity extends AppCompatActivity {
         this.initOrderID();
         setContentView(R.layout.confirmation_activity_layout);
         this.requestQueue = Volley.newRequestQueue(this);
+        Intent intent = this.getIntent();
+        Bundle extras = intent.getExtras();
+        this.hourOfDay = extras.getInt(PickupActivity.HourIntent);
+        this.min = extras.getInt(PickupActivity.MinIntent);
 
         TextView textView2 = findViewById(R.id.textView2);
         String text = "Your order has been registered! Ready for pickup in about 30 min. \n\n\nYour pickup reference is: \n ";

@@ -33,6 +33,8 @@
         <activity android:name=".MenuActivity"
             android:parentActivityName=".LoginActivity">
         </activity>
+        <activity android:name=".PickupActivity">
+        </activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
