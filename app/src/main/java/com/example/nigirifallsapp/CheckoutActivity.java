@@ -104,33 +104,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
     //transition to final state
     public void onButtonPlaceOrder(View view) {
-        String url = "http://folk.ntnu.no/magnuti/addorder.php/?order="; // Change URL
-        url += orderHashMapToString();
-        sendRequest(url);
-    }
-
-    // Function for sending a HTTP request to the PHP-script
-    private void sendRequest(String url) {
-        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                onActualResponse(response); // The extra function is needed because of the scope of the @Override function
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        requestQueue.add(stringRequest);
-    }
-
-    private void onActualResponse(String response) {
         Intent intent = new Intent(this, PickupActivity.class);
-        String orderID = "OrderID";
-        intent.putExtra(orderID, response);
+        String url = "http://org.ntnu.no/nigiriapp/addorder.php/?order="; // Change URL
+        url += orderHashMapToString();
+        intent.putExtra(url, this.OrderIntent);
         startActivity(intent);
     }
+
 }
