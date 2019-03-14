@@ -1,6 +1,5 @@
 package com.example.nigirifallsapp;
 
-
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;

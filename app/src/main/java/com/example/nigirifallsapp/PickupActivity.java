@@ -10,9 +10,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.util.Calendar;
+
 public class PickupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
     Button placeOrderBtn;
+    TextView errorText;
+    Boolean bool = true;
 
 
     @Override
@@ -20,6 +24,7 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickup);
 
+        this.errorText = findViewById(R.id.error_message_pickup);
         this.placeOrderBtn = findViewById(R.id.place_order);
         Button chooseTime = (Button) findViewById(R.id.button);
         chooseTime.setOnClickListener(new View.OnClickListener() {
@@ -35,82 +40,29 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int min){
         TextView textView = (TextView) findViewById(R.id.textView10);
-        textView.setText("Time:     " + hourOfDay + ":" + min);
+        Calendar c = Calendar.getInstance();
+        int hour_ = c.get(Calendar.HOUR_OF_DAY);
+        int min_ = c.get(Calendar.MINUTE);
+        for (int i = 0;i <1000;i++) {
+            textView.setText("");
+            errorText.setText("");
+            if (hourOfDay >= hour_ && min >= min_) {
+                this.bool = true;
+                textView.setText("Time:      " + hourOfDay + ":" + min);
+            } else {
+                this.bool = false;
+                errorText.setText("Invalid time! Cannot choose a time earlier than the current time");
 
+            }
+        }
     }
 
     public void onButtonPlaceOrder(View view){
-        Intent intent = new Intent(this, ConfirmationActivity.class);
-        startActivity(intent);
+        if(bool) {
+            Intent intent = new Intent(this, ConfirmationActivity.class);
+            startActivity(intent);
+        }
 
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
