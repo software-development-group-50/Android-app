@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     public void onButtonPlaceOrder(View view){
         this.url += "&time=";
         this.url += Integer.toString(this.hourOfDay) + ":" + Integer.toString(this.min) + ":00";
+        Log.e("Url", url);
         sendRequest(this.url);
     }
 

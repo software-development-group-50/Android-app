@@ -107,7 +107,7 @@ public class CheckoutActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PickupActivity.class);
         String url = "http://org.ntnu.no/nigiriapp/addorder.php/?order="; // Change URL
         url += orderHashMapToString();
-        intent.putExtra(url, this.OrderIntent);
+        intent.putExtra(this.OrderIntent, url);
         startActivity(intent);
     }
 
