@@ -147,7 +147,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     public void onButtonNew(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=New&orderid=";
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Waiting&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
@@ -159,7 +159,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     public void onButtonFinish(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Finish&orderid=";
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Ready&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
