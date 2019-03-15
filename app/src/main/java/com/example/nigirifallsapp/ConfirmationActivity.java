@@ -53,7 +53,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         this.requestQueue = Volley.newRequestQueue(this);
 
         TextView textView2 = findViewById(R.id.textView2);
-        String text = "Your order has been registered! Ready for pickup in about 30 min. \n\n\nYour pickup reference is: \n ";
+        String text = "Your order has been registered! Ready for pickup in about 30 min. \n\n\nYour pickup reference is: \n\n ";
         text += getOrderID() +"\n\n\n\n";
         textView2.setTextColor(getResources().getColor(R.color.textColorDark));
         textView2.setText(text);
