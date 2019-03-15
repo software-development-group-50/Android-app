@@ -106,8 +106,9 @@ public class AdminActivity extends AppCompatActivity {
             final TextView textPickUpTime = orderInAdminView.findViewById(R.id.textPickUpTime);
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
 
+            String timeString = orderInAdminList.get(i).getPickUpTime();
             textOrders.setText(orderInAdminList.get(i).getOrderId());
-            textPickUpTime.setText(orderInAdminList.get(i).getPickUpTime());
+            textPickUpTime.setText(timeString.substring(0, timeString.length()-3));
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
