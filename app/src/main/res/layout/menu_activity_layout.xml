@@ -6,48 +6,64 @@
     android:layout_height="match_parent"
     tools:context=".MenuActivity">
 
+
+    <TextView
+        android:id="@+id/textMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="Menu"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="40sp"
+        android:typeface="serif"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/scrollView"/>
+
     <Button
-        android:id="@+id/buttonCheckout"
-        android:layout_width="200sp"
-        android:layout_height="40sp"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="16dp"
-        android:onClick="onButtonCheckout"
-        android:text="Proceed to checkout"
-        android:background="@color/colorSecondary"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+        android:id="@+id/buttonLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:textSize="12sp"
+        android:background="@color/white"
+        android:onClick="onButtonLogout"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="14dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/scrollView"/>
 
     <ScrollView
         android:id="@+id/scrollView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonCheckout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/textMenu"
+        app:layout_constraintBottom_toTopOf="@id/buttonCheckout"
+        app:layout_constraintEnd_toStartOf="@id/buttonCheckout"
+        app:layout_constraintHorizontal_bias="0.5">
+
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/textMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Menu"
-                android:typeface="serif"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="40sp" />
-        </LinearLayout>
+            android:orientation="vertical" />
     </ScrollView>
+
+
+    <Button
+        android:id="@+id/buttonCheckout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSecondary"
+        android:onClick="onButtonCheckout"
+        android:text="Proceed to checkout"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+
 
 </android.support.constraint.ConstraintLayout>

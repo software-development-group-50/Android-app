@@ -2,6 +2,7 @@ package com.example.nigirifallsapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class MenuActivity extends AppCompatActivity {
     String stringFromPHP;
     Menu menu;
     Order order;
+
 
 
     @Override
@@ -115,21 +117,14 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    //function for increasing the counter of each dish by one
-    public void countUp(View view){
-        counter++;
-        showValue.setText(Integer.toString(counter));
+
+
+    public void onButtonLogout(View view){
+        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+        sp.edit().putBoolean("logged", false).apply();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
-
-    //function for decreasing the counter of each dish by one
-    public void countDown(View view){
-        counter--;
-        showValue.setText(Integer.toString(counter));
-    }*/
-
-
-
 
     // Function for moving to the Checkout-activity, the ArrayList this.order is passed to the Checkout-activity
     public void onButtonCheckout(View view){
