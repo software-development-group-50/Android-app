@@ -15,6 +15,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ChooseLocationActivity" />
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".AdminActivity"
             android:parentActivityName=".LoginActivity">
         </activity>
@@ -22,25 +30,17 @@
             android:noHistory="true"
             android:parentActivityName=".LoginActivity">
         </activity>
-        <activity android:name=".ChooseLocationActivity" />
-        <activity android:name=".ConfirmationActivity"
-            android:parentActivityName=".MenuActivity">
-        </activity>
-        <activity android:name=".CheckoutActivity"
-            android:noHistory="true"
-            android:parentActivityName=".MenuActivity">
-        </activity>
         <activity android:name=".MenuActivity"
             android:parentActivityName=".LoginActivity">
         </activity>
-        <activity android:name=".PickupActivity">
+        <activity android:name=".CheckoutActivity"
+            android:parentActivityName=".MenuActivity">
         </activity>
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".PickupActivity"
+            android:parentActivityName=".CheckoutActivity">
+        </activity>
+        <activity android:name=".ConfirmationActivity"
+            android:parentActivityName=".MenuActivity">
         </activity>
     </application>
 

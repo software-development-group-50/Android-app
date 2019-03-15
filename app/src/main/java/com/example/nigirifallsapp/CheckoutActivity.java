@@ -3,6 +3,7 @@ package com.example.nigirifallsapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -44,7 +45,6 @@ public class CheckoutActivity extends AppCompatActivity {
         this.buttonPlaceOrder = findViewById(R.id.button3);
         this.buttonBackToMenu = findViewById(R.id.returN);
         this.requestQueue = Volley.newRequestQueue(this);
-
 
         // Here the order and order-hashmap is fetched from the MenuActivity
         Intent intent = this.getIntent();

@@ -2,6 +2,7 @@ package com.example.nigirifallsapp;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -142,5 +143,10 @@ public class ConfirmationActivity extends AppCompatActivity {
                 statusTextView.setTextColor(getResources().getColor(R.color.canceledColor));
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this);
     }
 }
