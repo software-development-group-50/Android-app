@@ -1,6 +1,7 @@
 package com.example.nigirifallsapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView error_pw; //error message password
     RequestQueue requestQueue;
     String phoneNumber;
+    SharedPreferences sp;
 
 
     @Override
@@ -40,7 +42,13 @@ public class LoginActivity extends AppCompatActivity {
         error_pw = (TextView)findViewById(R.id.error_pw);
         this.requestQueue = Volley.newRequestQueue(this);
 
+        //Checking if user is already logged in
+        sp = getSharedPreferences("login", MODE_PRIVATE);
 
+        if(sp.getBoolean("logged", false)){
+            Intent menuIntent = new Intent(this, MenuActivity.class);
+            startActivity(menuIntent);
+        }
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onActualResponse(String response){
         if(response.trim().equals(this.phoneNumber)){
+            sp.edit().putBoolean("logged",true).apply();
             Intent menuIntent = new Intent(this, MenuActivity.class);
             startActivity(menuIntent);
         } else{
