@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         error_nr.setText("");
         error_pw.setText("");
 
-        if(number.equals("911") && password.equals("admin")){
+        if(number.equals("911") && password.equals("insidejob")){
             Intent adminIntent = new Intent(this, AdminActivity.class);
             startActivity(adminIntent);
         }
