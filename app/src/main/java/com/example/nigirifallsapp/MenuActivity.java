@@ -2,12 +2,14 @@ package com.example.nigirifallsapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +17,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import java.io.File;
 import java.util.List;
 import java.io.Serializable;
 
@@ -77,6 +81,7 @@ public class MenuActivity extends AppCompatActivity {
             TextView textName = dishView.findViewById(R.id.textName);
             TextView textDesc = dishView.findViewById(R.id.textDesc);
             TextView textPrice = dishView.findViewById(R.id.textPrice);
+
             final Button buttonPluss = dishView.findViewById(R.id.buttonPluss);
             final Button buttonMinus = dishView.findViewById(R.id.buttonMinus);
             final TextView intnum = dishView.findViewById(R.id.integer_number);
@@ -84,6 +89,12 @@ public class MenuActivity extends AppCompatActivity {
             textName.setText(tempDishList.get(i).getName());
             textDesc.setText(tempDishList.get(i).getDesc());
             textPrice.setText(Integer.toString(tempDishList.get(i).getPrice()) + ",-");
+
+            ImageView image = dishView.findViewById(R.id.dishImage);
+            int imageID = getResources().getIdentifier("com.example.nigirifallsapp:drawable/dish_" + Integer.toString(i+1), null, null);
+            image.setImageResource(imageID);
+
+
             buttonPluss.setId(i);
             buttonMinus.setId(i);
             buttonPluss.setOnClickListener(new View.OnClickListener() {
