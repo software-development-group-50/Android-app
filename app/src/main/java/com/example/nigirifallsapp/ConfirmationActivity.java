@@ -5,8 +5,6 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.graphics.Color;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,7 +20,6 @@ public class ConfirmationActivity extends AppCompatActivity {
     private String orderStatus = "Error";
     private String pickUpTime = "68:23:20";
     RequestQueue requestQueue;
-    Color NYELLOW = new Color();
     private int hourOfDay;
     private int min;
 
@@ -52,12 +49,14 @@ public class ConfirmationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.initOrderID();
         setContentView(R.layout.confirmation_activity_layout);
-        this.requestQueue = Volley.newRequestQueue(this);
+
         Intent intent = this.getIntent();
         Bundle extras = intent.getExtras();
         this.hourOfDay = extras.getInt(PickupActivity.HourIntent);
         this.min = extras.getInt(PickupActivity.MinIntent);
+        this.orderID = extras.getString(PickupActivity.OrderIDIntent);
 
+        this.requestQueue = Volley.newRequestQueue(this);
         TextView textView2 = findViewById(R.id.textView2);
         String text = "Your order has been registered! Ready for pickup in about 30 min. \n\n\nYour pickup reference is: \n ";
         text += getOrderID() +"\n\n\n\n";
@@ -95,7 +94,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
 
     private void requestOrderInfo() {
-        String url = "http://folk.ntnu.no/jennyjy/getorder.php/?OrderID="; // Change URL
+        String url = "http://org.ntnu.no/nigiriapp/getorder.php/?OrderID="; // Change URL
         url += getOrderID();
         sendRequest(url);
     }

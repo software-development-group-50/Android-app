@@ -27,7 +27,7 @@
         android:layout_marginTop="315dp"
         android:layout_marginEnd="148dp"
         android:layout_marginRight="148dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="10dp"
         android:onClick="onButtonPlaceOrder"
         android:text="Place order"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -64,5 +64,34 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <TextView
+        android:id="@+id/error_message_pickup"
+        android:layout_width="201dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="106dp"
+        android:layout_marginLeft="106dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginRight="104dp"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="195dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginLeft="108dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginRight="108dp"
+        android:text="Earliest available pickup time is in 30 min from when the order is placed! Choose an approriate time with this in mind!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Header_pickup" />
 
 </android.support.constraint.ConstraintLayout>

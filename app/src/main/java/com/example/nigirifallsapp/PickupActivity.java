@@ -10,13 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import java.util.Calendar;
 
 public class PickupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
@@ -25,8 +25,11 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     int min;
     public static final String HourIntent = "PickUpActivity.IntentString.Hour";
     public static final String MinIntent = "PickUpActivity.IntentString.Min";
+    public static final String OrderIDIntent = "PickUpActivity.IntentString.OrderID";
     private String url;
     RequestQueue requestQueue;
+    TextView errorText;
+    Boolean bool = true;
 
 
     @Override
@@ -37,6 +40,7 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         this.url = intent.getStringExtra(CheckoutActivity.OrderIntent);
         this.requestQueue = Volley.newRequestQueue(this);
 
+        this.errorText = findViewById(R.id.error_message_pickup);
         this.placeOrderBtn = findViewById(R.id.place_order);
         Button chooseTime = (Button) findViewById(R.id.button);
         chooseTime.setOnClickListener(new View.OnClickListener() {
@@ -54,8 +58,21 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         this.hourOfDay = hourOfDay;
         this.min = min;
         TextView textView = (TextView) findViewById(R.id.textView10);
-        textView.setText("Time:     " + hourOfDay + ":" + min);
+        Calendar c = Calendar.getInstance();
+        int hour_ = c.get(Calendar.HOUR_OF_DAY);
+        int min_ = c.get(Calendar.MINUTE);
+        for (int i = 0;i <1000;i++) {
+            textView.setText("");
+            errorText.setText("");
+            if (hourOfDay >= hour_ && min >= min_) {
+                this.bool = true;
+                textView.setText("Time:      " + hourOfDay + ":" + min);
+            } else {
+                this.bool = false;
+                errorText.setText("Invalid time! Cannot choose a time earlier than the current time");
 
+            }
+        }
     }
 
     public void onButtonPlaceOrder(View view){
@@ -87,70 +104,9 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         Bundle bundle = new Bundle();
         bundle.putInt(HourIntent, this.hourOfDay);
         bundle.putInt(MinIntent, this.min);
+        bundle.putString(OrderIDIntent, response);
         intent.putExtras(bundle);
-
         startActivity(intent);
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

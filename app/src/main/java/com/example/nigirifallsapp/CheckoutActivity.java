@@ -105,7 +105,7 @@ public class CheckoutActivity extends AppCompatActivity {
     //transition to final state
     public void onButtonPlaceOrder(View view) {
         Intent intent = new Intent(this, PickupActivity.class);
-        String url = "http://org.ntnu.no/nigiriapp/addorder.php/?order="; // Change URL
+        String url = "http://org.ntnu.no/nigiriapp/addorder.php/?order=";
         url += orderHashMapToString();
         intent.putExtra(this.OrderIntent, url);
         startActivity(intent);
