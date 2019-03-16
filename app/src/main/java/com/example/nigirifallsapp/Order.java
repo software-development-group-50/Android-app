@@ -10,7 +10,6 @@ public class Order implements Parcelable {
     private int customerID;
     private int orderID;
     private Map<Dish, Integer> numOfEachDish;
-    //private int totalPrice;
 
     //public Order(@NotNull Menu menu, int orderID, int customerID){
     public Order(Menu menu, int orderID, int customerID) {
@@ -56,18 +55,14 @@ public class Order implements Parcelable {
 
     }
 
-    public void updateTotalPrice() {
-        int totPrice = 0;
+    public Integer getTotalPrice() {
+        Integer totPrice = 0;
         for (Dish dish : numOfEachDish.keySet()) {
 
             totPrice += dish.price * numOfEachDish.get(dish);
         }
-        //this.totalPrice = totPrice;
+        return totPrice;
     }
-
-    /*public int getTotalPrice(){
-        return this.totalPrice;
-    }*/
 
     public Map<Dish, Integer> getNumOfEachDish() {
         return this.numOfEachDish;

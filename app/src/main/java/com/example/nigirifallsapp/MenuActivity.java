@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import android.widget.Button;
 
 import java.io.File;
 import java.util.List;
@@ -106,6 +107,7 @@ public class MenuActivity extends AppCompatActivity {
                     //showValue = (TextView) findViewById(R.id.counterValue);
                     int count = Integer.valueOf(intnum.getText().toString());
                     intnum.setText(Integer.toString(count + 1));
+                    changeTotalPrice();
                 }
             });
             buttonMinus.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +118,7 @@ public class MenuActivity extends AppCompatActivity {
                     if(count>0) {
                         onRemoveDish(tempDishList.get(buttonMinus.getId()));
                         intnum.setText(Integer.toString(count - 1));
+                        changeTotalPrice();
 
                     }
                 }
@@ -138,10 +141,12 @@ public class MenuActivity extends AppCompatActivity {
 
     // Function for moving to the Checkout-activity, the ArrayList this.order is passed to the Checkout-activity
     public void onButtonCheckout(View view){
-        Intent intent = new Intent(this, CheckoutActivity.class);
-        intent.putExtra(OrderIntent, this.order);
-        intent.putExtra(HashMapIntent, (Serializable) order.getNumOfEachDish());
-        startActivity(intent);
+        if (order.getTotalPrice() > 0){
+            Intent intent = new Intent(this, CheckoutActivity.class);
+            intent.putExtra(OrderIntent, this.order);
+            intent.putExtra(HashMapIntent, (Serializable) order.getNumOfEachDish());
+            startActivity(intent);
+        }
     }
 
     private void onAddDish(Dish dish){
@@ -153,6 +158,17 @@ public class MenuActivity extends AppCompatActivity {
             this.order.removeDishInOrder(dish);
         } catch (Exception e){
 
+        }
+    }
+
+    private void changeTotalPrice() {
+        Integer totalPrice = this.order.getTotalPrice();
+        Button checkoutButton = (Button) findViewById(R.id.buttonCheckout);
+        String price = Integer.toString(totalPrice);
+        if (price.equals("0")) {
+            checkoutButton.setText("Shopping Cart is empty");
+        } else {
+            checkoutButton.setText("Proceed to checkout: " + price + ";-");
         }
     }
 }
