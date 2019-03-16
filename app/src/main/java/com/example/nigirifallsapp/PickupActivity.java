@@ -1,18 +1,11 @@
 package com.example.nigirifallsapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.app.TimePickerDialog;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import java.util.Calendar;
-import java.util.List;
 
 public class PickupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
@@ -37,6 +29,7 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     private String url;
     RequestQueue requestQueue;
     TextView errorText;
+    TextView textTime;
     Boolean bool = true;
 
 
@@ -45,13 +38,14 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickup);
         Intent intent = this.getIntent();
-        Log.e("classname", intent.getComponent().getShortClassName());
         this.url = intent.getStringExtra(CheckoutActivity.OrderIntent);
         this.requestQueue = Volley.newRequestQueue(this);
 
         this.errorText = findViewById(R.id.error_message_pickup);
         this.placeOrderBtn = findViewById(R.id.place_order);
+        this.textTime = findViewById(R.id.textTime);
         Button chooseTime = (Button) findViewById(R.id.button);
+
         chooseTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,26 +53,24 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
                 timePicker.show(getSupportFragmentManager(), "Pick time");
             }
         });
-
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int min){
         this.hourOfDay = hourOfDay;
         this.min = min;
-        TextView textView = (TextView) findViewById(R.id.textView10);
         Calendar c = Calendar.getInstance();
         int hour_ = c.get(Calendar.HOUR_OF_DAY);
         int min_ = c.get(Calendar.MINUTE);
         for (int i = 0;i <1000;i++) {
-            textView.setText("");
-            errorText.setText("");
+            this.textTime.setText("");
+            this.errorText.setText("");
             if (hourOfDay >= hour_ && min >= min_) {
                 this.bool = true;
-                textView.setText("Time:      " + hourOfDay + ":" + min);
+                this.textTime.setText("Time:      " + hourOfDay + ":" + min);
             } else {
                 this.bool = false;
-                errorText.setText("Invalid time! Cannot choose a time earlier than the current time");
+                this.errorText.setText("Invalid time! Cannot choose a time earlier than the current time");
 
             }
         }
