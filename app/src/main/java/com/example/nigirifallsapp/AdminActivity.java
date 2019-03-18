@@ -106,8 +106,9 @@ public class AdminActivity extends AppCompatActivity {
             final TextView textPickUpTime = orderInAdminView.findViewById(R.id.textPickUpTime);
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
 
+            String timeString = orderInAdminList.get(i).getPickUpTime();
             textOrders.setText(orderInAdminList.get(i).getOrderId());
-            textPickUpTime.setText(orderInAdminList.get(i).getPickUpTime());
+            textPickUpTime.setText(timeString.substring(0, timeString.length()-3));
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
@@ -147,7 +148,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     public void onButtonNew(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=New&orderid=";
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Waiting&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
@@ -159,7 +160,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     public void onButtonFinish(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Finish&orderid=";
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Ready&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
