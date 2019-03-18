@@ -2,12 +2,14 @@ package com.example.nigirifallsapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +17,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import android.widget.Button;
+
+import java.io.File;
 import java.util.List;
 import java.io.Serializable;
 
@@ -29,6 +34,7 @@ public class MenuActivity extends AppCompatActivity {
     String stringFromPHP;
     Menu menu;
     Order order;
+
 
 
     @Override
@@ -77,6 +83,7 @@ public class MenuActivity extends AppCompatActivity {
             TextView textName = dishView.findViewById(R.id.textName);
             TextView textDesc = dishView.findViewById(R.id.textDesc);
             TextView textPrice = dishView.findViewById(R.id.textPrice);
+
             final Button buttonPluss = dishView.findViewById(R.id.buttonPluss);
             final Button buttonMinus = dishView.findViewById(R.id.buttonMinus);
             final TextView intnum = dishView.findViewById(R.id.integer_number);
@@ -84,6 +91,12 @@ public class MenuActivity extends AppCompatActivity {
             textName.setText(tempDishList.get(i).getName());
             textDesc.setText(tempDishList.get(i).getDesc());
             textPrice.setText(Integer.toString(tempDishList.get(i).getPrice()) + ",-");
+
+            ImageView image = dishView.findViewById(R.id.dishImage);
+            int imageID = getResources().getIdentifier("com.example.nigirifallsapp:drawable/dish_" + Integer.toString(i+1), null, null);
+            image.setImageResource(imageID);
+
+
             buttonPluss.setId(i);
             buttonMinus.setId(i);
             buttonPluss.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +107,7 @@ public class MenuActivity extends AppCompatActivity {
                     //showValue = (TextView) findViewById(R.id.counterValue);
                     int count = Integer.valueOf(intnum.getText().toString());
                     intnum.setText(Integer.toString(count + 1));
+                    changeTotalPrice();
                 }
             });
             buttonMinus.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +118,7 @@ public class MenuActivity extends AppCompatActivity {
                     if(count>0) {
                         onRemoveDish(tempDishList.get(buttonMinus.getId()));
                         intnum.setText(Integer.toString(count - 1));
+                        changeTotalPrice();
 
                     }
                 }
@@ -115,28 +130,23 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    //function for increasing the counter of each dish by one
-    public void countUp(View view){
-        counter++;
-        showValue.setText(Integer.toString(counter));
+
+
+    public void onButtonLogout(View view){
+        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+        sp.edit().putBoolean("logged", false).apply();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
-
-    //function for decreasing the counter of each dish by one
-    public void countDown(View view){
-        counter--;
-        showValue.setText(Integer.toString(counter));
-    }*/
-
-
-
 
     // Function for moving to the Checkout-activity, the ArrayList this.order is passed to the Checkout-activity
     public void onButtonCheckout(View view){
-        Intent intent = new Intent(this, CheckoutActivity.class);
-        intent.putExtra(OrderIntent, this.order);
-        intent.putExtra(HashMapIntent, (Serializable) order.getNumOfEachDish());
-        startActivity(intent);
+        if (order.getTotalPrice() > 0){
+            Intent intent = new Intent(this, CheckoutActivity.class);
+            intent.putExtra(OrderIntent, this.order);
+            intent.putExtra(HashMapIntent, (Serializable) order.getNumOfEachDish());
+            startActivity(intent);
+        }
     }
 
     private void onAddDish(Dish dish){
@@ -148,6 +158,17 @@ public class MenuActivity extends AppCompatActivity {
             this.order.removeDishInOrder(dish);
         } catch (Exception e){
 
+        }
+    }
+
+    private void changeTotalPrice() {
+        Integer totalPrice = this.order.getTotalPrice();
+        Button checkoutButton = (Button) findViewById(R.id.buttonCheckout);
+        String price = Integer.toString(totalPrice);
+        if (price.equals("0")) {
+            checkoutButton.setText("Shopping Cart is empty");
+        } else {
+            checkoutButton.setText("Proceed to checkout: " + price + ";-");
         }
     }
 }
