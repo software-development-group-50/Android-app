@@ -77,6 +77,7 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     }
 
     public void onButtonPlaceOrder(View view){
+        this.placeOrderBtn.setEnabled(false);
         this.url += "&time=";
         this.url += Integer.toString(this.hourOfDay) + ":" + Integer.toString(this.min) + ":00";
         Log.e("Url", url);
