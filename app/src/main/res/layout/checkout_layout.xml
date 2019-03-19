@@ -7,25 +7,25 @@
     tools:context=".CheckoutActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/scrollView3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
         <TextView
-            android:text="Checkout"
-            android:typeface="serif"
-            android:textAlignment="center"
-            android:textSize="40sp"
-            android:textColor="@color/textColorPrimary"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:text="Checkout"
+            android:textAlignment="center"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="40sp"
+            android:typeface="serif" />
 
     </LinearLayout>
 
@@ -33,11 +33,10 @@
         android:id="@+id/button3"
         android:layout_width="175dp"
         android:layout_height="75dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/colorSecondary"
         android:onClick="onButtonPlaceOrder"
-        android:text="Place Order"
+        android:text="Choose pickup time"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -48,8 +47,7 @@
         android:id="@+id/returN"
         android:layout_width="177dp"
         android:layout_height="70dp"
-        android:layout_marginTop="415dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/counterButton"
         android:onClick="onButtonBackToMenu"
         android:text="Clear all"
@@ -57,22 +55,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
 
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="0dp"
-        android:layout_height="328dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/returN"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <LinearLayout
             android:id="@+id/linearLayout"

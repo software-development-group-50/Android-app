@@ -3,6 +3,7 @@ package com.example.nigirifallsapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -44,7 +45,6 @@ public class CheckoutActivity extends AppCompatActivity {
         this.buttonPlaceOrder = findViewById(R.id.button3);
         this.buttonBackToMenu = findViewById(R.id.returN);
         this.requestQueue = Volley.newRequestQueue(this);
-
 
         // Here the order and order-hashmap is fetched from the MenuActivity
         Intent intent = this.getIntent();
@@ -104,33 +104,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
     //transition to final state
     public void onButtonPlaceOrder(View view) {
-        String url = "http://folk.ntnu.no/magnuti/addorder.php/?order="; // Change URL
+        Intent intent = new Intent(this, PickupActivity.class);
+        String url = "http://org.ntnu.no/nigiriapp/addorder.php/?order=";
         url += orderHashMapToString();
-        sendRequest(url);
-    }
-
-    // Function for sending a HTTP request to the PHP-script
-    private void sendRequest(String url) {
-        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                onActualResponse(response); // The extra function is needed because of the scope of the @Override function
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        requestQueue.add(stringRequest);
-    }
-
-    private void onActualResponse(String response) {
-        Intent intent = new Intent(this, ConfirmationActivity.class);
-        String orderID = "OrderID";
-        intent.putExtra(orderID, response);
+        intent.putExtra(this.OrderIntent, url);
         startActivity(intent);
     }
+
 }
