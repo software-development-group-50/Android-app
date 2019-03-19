@@ -36,6 +36,7 @@
         android:layout_marginBottom="116dp"
         android:background="@color/counterButton"
         android:text="Login"
+        android:onClick="onButtonLogin"
         app:layout_constraintBottom_toTopOf="@+id/registered_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

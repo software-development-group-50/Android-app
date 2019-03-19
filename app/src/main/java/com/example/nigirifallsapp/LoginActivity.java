@@ -50,22 +50,17 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(menuIntent);
         }
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 1000-for loop???
-                //for (int i = 0; i < 1000; i++){
-                    phoneNumber = phoneNr.getText().toString().trim();
-                    validate(phoneNumber, password.getText().toString());
-                //}
-            }
-        });
-
     }
 
     public void onButtonRegister(View view){
         Intent registerIntent = new Intent(this, RegisterActivity.class);
         startActivity(registerIntent);
+    }
+
+    public void onButtonLogin(View view){
+        this.loginBtn.setEnabled(false);
+        phoneNumber = phoneNr.getText().toString().trim();
+        validate(phoneNumber, password.getText().toString());
     }
 
     // If the username and password matches a user in the database, the next acitivity is MenuActivity
@@ -110,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(menuIntent);
         } else{
             error_pw.setText(response);
+            this.loginBtn.setEnabled(true);
         }
     }
 
