@@ -3,10 +3,16 @@ package com.example.nigirifallsapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -36,6 +42,7 @@ public class CheckoutActivity extends AppCompatActivity {
     //Order order;
     Map<Dish, Integer> numOfEachDish;
     Integer orderID;
+    private DrawerLayout drawerLayout;
 
 
     @Override
@@ -50,6 +57,30 @@ public class CheckoutActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         //this.order = intent.getParcelableExtra(MenuActivity.OrderIntent);
         this.numOfEachDish = (HashMap<Dish, Integer>) intent.getSerializableExtra(MenuActivity.HashMapIntent);
+
+        this.drawerLayout = findViewById(R.id.drawer_layout);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.icon_menu);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        drawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
 
 
         // Function to add every Dish-item from ArrayList order to the ScrollView
@@ -76,6 +107,16 @@ public class CheckoutActivity extends AppCompatActivity {
                 // The -1 index specifies that the element is added LAST to the ScrollView
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //go to remove or add items from checkout-menu
@@ -109,6 +150,16 @@ public class CheckoutActivity extends AppCompatActivity {
         url += orderHashMapToString();
         intent.putExtra(this.OrderIntent, url);
         startActivity(intent);
+    }
+
+    // This function is called on the hardware back-button on the phone.
+    @Override
+    public void onBackPressed() {
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 }

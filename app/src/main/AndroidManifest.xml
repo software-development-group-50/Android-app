@@ -35,6 +35,7 @@
             android:parentActivityName=".LoginActivity">
         </activity>
         <activity android:name=".CheckoutActivity"
+            android:label="Checkout"
             android:parentActivityName=".MenuActivity">
         </activity>
         <activity android:name=".PickupActivity"
