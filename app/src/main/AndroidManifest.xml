@@ -39,6 +39,7 @@
             android:parentActivityName=".MenuActivity">
         </activity>
         <activity android:name=".PickupActivity"
+            android:label="Pick-up time"
             android:parentActivityName=".CheckoutActivity">
         </activity>
         <activity android:name=".ConfirmationActivity"
