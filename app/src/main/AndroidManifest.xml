@@ -43,6 +43,7 @@
             android:parentActivityName=".CheckoutActivity">
         </activity>
         <activity android:name=".ConfirmationActivity"
+            android:label="Confirmation"
             android:parentActivityName=".MenuActivity">
         </activity>
     </application>
