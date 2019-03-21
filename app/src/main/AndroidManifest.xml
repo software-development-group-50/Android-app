@@ -31,7 +31,7 @@
             android:parentActivityName=".LoginActivity">
         </activity>
         <activity android:name=".MenuActivity"
-            android:parentActivityName=".LoginActivity">
+            android:label="Menu">
         </activity>
         <activity android:name=".CheckoutActivity"
             android:parentActivityName=".MenuActivity">
