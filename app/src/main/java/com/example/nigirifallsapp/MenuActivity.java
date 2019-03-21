@@ -3,29 +3,36 @@ package com.example.nigirifallsapp;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import android.widget.Button;
+import android.support.v7.widget.Toolbar;
 
 import java.io.File;
 import java.util.List;
 import java.io.Serializable;
-
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -37,6 +44,7 @@ public class MenuActivity extends AppCompatActivity {
     String stringFromPHP;
     Menu menu;
     Order order;
+    private DrawerLayout drawerLayout;
 
 
     @Override
@@ -46,7 +54,39 @@ public class MenuActivity extends AppCompatActivity {
         this.requestQueue = Volley.newRequestQueue(this);
         this.sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
         this.buttonCheckout = findViewById(R.id.buttonCheckout);
+        this.drawerLayout = findViewById(R.id.drawer_layout);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.icon_menu);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        drawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // Function for sending a HTTP request to the PHP-script
@@ -132,11 +172,6 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-
-    public void onButtonLogout(View view) {
-        logOut();
-    }
-
     // Function for moving to the Checkout-activity, the ArrayList this.order is passed to the Checkout-activity
     public void onButtonCheckout(View view) {
         if (order.getTotalPrice() > 0) {
@@ -162,21 +197,25 @@ public class MenuActivity extends AppCompatActivity {
     // This function is called on the hardware back-button on the phone.
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to log out?")
-                .setPositiveButton("Log out", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        logOut();
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure you want to log out?")
+                    .setPositiveButton("Log out", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            logOut();
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
     private void logOut() {
@@ -185,7 +224,7 @@ public class MenuActivity extends AppCompatActivity {
         NavUtils.navigateUpFromSameTask(this); // This clears the Menu activity from the activity stack. Only Login activity now.
     }
 
-    private void changeTotalPrice () {
+    private void changeTotalPrice() {
         Integer totalPrice = this.order.getTotalPrice();
         Button checkoutButton = (Button) findViewById(R.id.buttonCheckout);
         String price = Integer.toString(totalPrice);

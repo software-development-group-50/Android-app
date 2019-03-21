@@ -2,26 +2,18 @@ package com.example.nigirifallsapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
-import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
-
-import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +43,10 @@ public class CheckoutActivity extends AppCompatActivity {
         //this.order = intent.getParcelableExtra(MenuActivity.OrderIntent);
         this.numOfEachDish = (HashMap<Dish, Integer>) intent.getSerializableExtra(MenuActivity.HashMapIntent);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // This line adds the back-button on the ActionBar
 
         // Function to add every Dish-item from ArrayList order to the ScrollView
         for (Map.Entry<Dish, Integer> map : numOfEachDish.entrySet()) {
@@ -76,6 +72,16 @@ public class CheckoutActivity extends AppCompatActivity {
                 // The -1 index specifies that the element is added LAST to the ScrollView
             }
         }
+    }
+
+    // This functions overrides the bar back-button so that it has the same function as the hardware back-button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return true;
     }
 
     //go to remove or add items from checkout-menu

@@ -3,9 +3,13 @@ package com.example.nigirifallsapp;
 import android.content.Intent;
 import android.app.TimePickerDialog;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -46,6 +50,11 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         this.textTime = findViewById(R.id.textTime);
         Button chooseTime = (Button) findViewById(R.id.button);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // This line adds the back-button on the ActionBar
+
         chooseTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +62,16 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
                 timePicker.show(getSupportFragmentManager(), "Pick time");
             }
         });
+    }
+
+    // This functions overrides the bar back-button so that it has the same function as the hardware back-button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+        }
+        return true;
     }
 
     @Override
