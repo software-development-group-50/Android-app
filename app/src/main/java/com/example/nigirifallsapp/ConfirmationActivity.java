@@ -1,5 +1,6 @@
 package com.example.nigirifallsapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.NavigationView;
@@ -7,10 +8,16 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,6 +37,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     private int hourOfDay;
     private int min;
     private DrawerLayout drawerLayout;
+
 
 
     Thread thread = new Thread() {
@@ -104,6 +112,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         statusTextView.setTextColor(getResources().getColor(R.color.waitingColor));
         statusTextView.setTextSize(24);
         thread.start();
+        requestReview();
     }
 
     @Override
@@ -174,6 +183,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         switch (orderStatus) {
             case "Waiting":
                 statusTextView.setTextColor(getResources().getColor(R.color.waitingColor));
+                requestReview();
                 break;
             case "Confirmed":
                 statusTextView.setTextColor(getResources().getColor(R.color.confirmedColor));
@@ -195,4 +205,40 @@ public class ConfirmationActivity extends AppCompatActivity {
             NavUtils.navigateUpFromSameTask(this);
         }
     }
+
+    public void requestReview() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //RatingBar rb = new RatingBar(this, null, android.R.attr.ratingBarStyleSmall);
+        RatingBar rb = new RatingBar(this);
+        //RatingBar rb = findViewById(R.id.simpleRatingBar);
+        rb.setNumStars(5);
+        rb.setRating(4.5f);
+        rb.setMax(5);
+        rb.setStepSize(0.5f);
+
+        LinearLayout ll = new LinearLayout(this);
+        rb.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        ll.addView(rb);
+
+        //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //rb.setLayoutParams(layoutParams);
+
+        builder.setMessage("Could you please leave a review of your customer experience?")
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setView(ll);
+        AlertDialog dialog = builder.create();
+        //builder.create();
+        //builder.show();
+        dialog.show();
+    }
+
 }
