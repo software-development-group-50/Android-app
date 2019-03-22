@@ -78,19 +78,21 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     public void onTimeSet(TimePicker view, int hourOfDay, int min){
         this.hourOfDay = hourOfDay;
         this.min = min;
+        double time_selected = hourOfDay + min/60;
         Calendar c = Calendar.getInstance();
         int hour_ = c.get(Calendar.HOUR_OF_DAY);
         int min_ = c.get(Calendar.MINUTE);
+        double time_now = hour_ + min_/60;
+
         for (int i = 0;i <1000;i++) {
             this.textTime.setText("");
             this.errorText.setText("");
-            if (hourOfDay >= hour_ && min >= min_) {
+            if (time_selected >= (time_now + 0.5 )) {
                 this.bool = true;
                 this.textTime.setText("Time:      " + hourOfDay + ":" + min);
             } else {
                 this.bool = false;
-                this.errorText.setText("Invalid time! Cannot choose a time earlier than the current time");
-
+                this.errorText.setText("Invalid time! Cannot choose a pick-up time earlier than in 30 minutes");
             }
         }
     }
