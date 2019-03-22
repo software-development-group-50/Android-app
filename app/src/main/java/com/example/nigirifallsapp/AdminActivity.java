@@ -112,8 +112,8 @@ public class AdminActivity extends AppCompatActivity {
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
-            outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-            // The -1 index specifies that the element is added LAST to the ScrollView
+            outerInsertPoint.addView(orderInAdminView, 1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+            // The 1 index specifies that the element is added FIRST to the ScrollView
 
             for (int k = 0; k < orderInAdminList.get(i).getDishList().size(); k += 2){
                 LayoutInflater innerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -127,6 +127,7 @@ public class AdminActivity extends AppCompatActivity {
 
                 ViewGroup innerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutOrder);
                 innerInsertPoint.addView(dishInOrderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+                // The -1 index specifies that the element is added LAST to the ScrollView
             }
 
             final LinearLayout linearLayoutOrder = findViewById(R.id.linearLayoutOrder);
