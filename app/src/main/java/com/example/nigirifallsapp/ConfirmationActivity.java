@@ -12,9 +12,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -208,22 +210,27 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     public void requestReview() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //RatingBar rb = new RatingBar(this, null, android.R.attr.ratingBarStyleSmall);
-        RatingBar rb = new RatingBar(this);
-        //RatingBar rb = findViewById(R.id.simpleRatingBar);
-        rb.setNumStars(5);
-        rb.setRating(4.5f);
-        rb.setMax(5);
-        rb.setStepSize(0.5f);
 
         LinearLayout ll = new LinearLayout(this);
-        rb.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0));
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        RatingBar rb = new RatingBar(this);
+        rb.setNumStars(5);
+        rb.setRating(3.5f);
+        rb.setMax(5);
+        rb.setStepSize(0.5f);
+        rb.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, 1));
         ll.addView(rb);
 
-        //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //rb.setLayoutParams(layoutParams);
 
-        builder.setMessage("Could you please leave a review of your customer experience?")
+        EditText review = new EditText(this);
+        review.setGravity(Gravity.CENTER_HORIZONTAL);
+        review.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,1));
+        ll.addView(review);
+
+        builder.setMessage("Please leave us a review!")
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -236,9 +243,10 @@ public class ConfirmationActivity extends AppCompatActivity {
         });
         builder.setView(ll);
         AlertDialog dialog = builder.create();
-        //builder.create();
-        //builder.show();
         dialog.show();
+        TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
+        messageView.setTextSize(20);
     }
 
 }
