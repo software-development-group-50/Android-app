@@ -1,6 +1,7 @@
 package com.example.nigirifallsapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,23 +9,33 @@ import android.widget.Button;
 
 public class ChooseLocationActivity extends AppCompatActivity {
 
-    Button buttonToMenu;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose_location_activity_layout);
-        this.buttonToMenu = findViewById(R.id.button6);
+        this.sharedPreferences = getSharedPreferences("location", MODE_PRIVATE);
     }
 
 
-
-    public void onButtonToMenu(View view) {
-        Intent intent = new Intent(this, MenuActivity.class);
-        //intent.putParcelableArrayListExtra(OrderIntent, (ArrayList<? extends Parcelable>) this.order);
+    public void onButtonOslo(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        this.sharedPreferences.edit().putString("locationString", "Oslo");
     }
 
+    public void onButtonTrondheim(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        this.sharedPreferences.edit().putString("locationString", "Trondheim");
+    }
+
+    public void onButtonBergen(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        this.sharedPreferences.edit().putString("locationString", "Bergen");
+    }
 
 
 }
