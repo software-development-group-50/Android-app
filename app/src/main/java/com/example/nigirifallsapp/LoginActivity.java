@@ -2,8 +2,10 @@ package com.example.nigirifallsapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,14 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        phoneNr = (EditText)findViewById(R.id.input_nr);
-        password = (EditText)findViewById(R.id.input_password);
-        this.loginBtn = findViewById(R.id.login_login);
-        this.registerBtn = findViewById(R.id.Register1);
-        error_nr = (TextView)findViewById(R.id.error_nr);
-        error_pw = (TextView)findViewById(R.id.error_pw);
-        this.requestQueue = Volley.newRequestQueue(this);
-
         //Checking if user is already logged in
         sp = getSharedPreferences("login", MODE_PRIVATE);
 
@@ -49,6 +43,19 @@ public class LoginActivity extends AppCompatActivity {
             Intent menuIntent = new Intent(this, MenuActivity.class);
             startActivity(menuIntent);
         }
+
+        phoneNr = findViewById(R.id.input_nr);
+        password = findViewById(R.id.input_password);
+        this.loginBtn = findViewById(R.id.login_login);
+        this.registerBtn = findViewById(R.id.Register1);
+        error_nr = findViewById(R.id.error_nr);
+        error_pw = findViewById(R.id.error_pw);
+        this.requestQueue = Volley.newRequestQueue(this);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // This line adds the back-button on the ActionBar
 
     }
 
@@ -104,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent menuIntent = new Intent(this, MenuActivity.class);
             startActivity(menuIntent);
         } else{
-            error_pw.setText(response);
+            error_pw.setText("Wrong username/password");
             this.loginBtn.setEnabled(true);
         }
     }

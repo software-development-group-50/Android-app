@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChooseLocationActivity">
+        <activity android:name=".ChooseLocationActivity"
+            android:label="Nigiri Falls - Choose Location">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
