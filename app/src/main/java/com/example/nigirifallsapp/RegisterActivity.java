@@ -1,8 +1,10 @@
 package com.example.nigirifallsapp;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.view.View;
 import android.widget.EditText;
@@ -40,6 +42,11 @@ public class RegisterActivity extends AppCompatActivity {
         error_confirm = (TextView) findViewById(R.id.error_confirm);
         error_nr = (TextView) findViewById(R.id.error_nr);
         this.requestQueue = Volley.newRequestQueue(this);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // This line adds the back-button on the ActionBar
 
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
