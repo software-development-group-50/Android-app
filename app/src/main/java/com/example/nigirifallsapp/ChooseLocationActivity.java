@@ -35,19 +35,19 @@ public class ChooseLocationActivity extends AppCompatActivity {
     public void onButtonOslo(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        this.sharedPreferencesLocation.edit().putString("locationString", "Oslo");
+        this.sharedPreferencesLocation.edit().putString("locationString", "Oslo").apply();
     }
 
     public void onButtonTrondheim(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        this.sharedPreferencesLocation.edit().putString("locationString", "Trondheim");
+        this.sharedPreferencesLocation.edit().putString("locationString", "Trondheim").apply();
     }
 
     public void onButtonBergen(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        this.sharedPreferencesLocation.edit().putString("locationString", "Bergen");
+        this.sharedPreferencesLocation.edit().putString("locationString", "Bergen").apply();
     }
 
 
