@@ -41,7 +41,6 @@ public class AdminActivity extends AppCompatActivity {
         this.buttonConfirm = findViewById(R.id.buttonConfirm);
         this.buttonFinish = findViewById(R.id.buttonFinish);
         this.linearLayoutAdmin = findViewById(R.id.linearLayoutAdmin);
-        this.chosenDishIndex = 0; //To prevent null-pointer exception
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -99,7 +98,8 @@ public class AdminActivity extends AppCompatActivity {
 
     private void onActualResponseChangeStatus(String response){
         // Reloads all the orders, but not the text Orders.
-        this.linearLayoutAdmin.removeViews(1, linearLayoutAdmin.getChildCount() - 1);
+        //this.linearLayoutAdmin.removeViews(1, linearLayoutAdmin.getChildCount() - 1);
+        this.linearLayoutAdmin.removeAllViews();
         sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
     }
 
@@ -115,14 +115,13 @@ public class AdminActivity extends AppCompatActivity {
             final TextView textPickUpTime = orderInAdminView.findViewById(R.id.textPickUpTime);
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
 
-            String timeString = orderInAdminList.get(i).getPickUpTime();
             textOrders.setText(orderInAdminList.get(i).getOrderId());
-            textPickUpTime.setText(timeString.substring(0, timeString.length()-3));
+            textPickUpTime.setText(orderInAdminList.get(i).getPickUpTime());
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
-            outerInsertPoint.addView(orderInAdminView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-            // The 0 index specifies that the element is added FIRST to the ScrollView
+            outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+            // The -1 index specifies that the element is added LAST to the ScrollView
 
             for (int k = 0; k < orderInAdminList.get(i).getDishList().size(); k += 2){
                 LayoutInflater innerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -136,14 +135,12 @@ public class AdminActivity extends AppCompatActivity {
 
                 ViewGroup innerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutOrder);
                 innerInsertPoint.addView(dishInOrderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-                // The -1 index specifies that the element is added LAST to the ScrollView
             }
 
             final LinearLayout linearLayoutOrder = findViewById(R.id.linearLayoutOrder);
             this.defaultColor = linearLayoutOrder.getSolidColor(); // I don´t know the default color in Android Studio, so it is fetched here.
-            // The +1 is needed because the text Orders has index 0, therefore, the getChildAt is indexed +1.
             linearLayoutOrder.setId(i); // This line is required so that not all orders are placed into the same linearLayoutOrder.
-            final int linearLayoutOrderIndex = linearLayoutOrder.getId(); //Aka i
+            final int linearLayoutOrderIndex = linearLayoutOrder.getId();
 
             this.linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -157,7 +154,7 @@ public class AdminActivity extends AppCompatActivity {
         }
     }
 
-    public void onButtonNew(View view){
+    public void onButtonWaiting(View view){
         String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Waiting&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
@@ -169,7 +166,7 @@ public class AdminActivity extends AppCompatActivity {
         this.sendRequestChangeStatus(url);
     }
 
-    public void onButtonFinish(View view){
+    public void onButtonReady(View view){
         String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Ready&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
