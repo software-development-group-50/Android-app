@@ -104,8 +104,8 @@ public class AdminActivity extends AppCompatActivity {
 
     // Function for adding all orders to the ScrollView and adding ClickListeners to them
     private void addMenuToView(List<OrderInAdmin> orderInAdminList){
-        // Starts at 1 so the text Orders is not affected.
-        for (int i = 0; i < orderInAdminList.size(); i++){
+        // Reversed for-loop, since we want newest order on top
+        for (int i = orderInAdminList.size() - 1; i >= 0; i--){
             LayoutInflater outerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View orderInAdminView = outerLayoutInflater.inflate(R.layout.order_in_admin_layout, null);
             final int orderid = Integer.valueOf(orderInAdminList.get(i).getOrderId().trim());
@@ -121,7 +121,7 @@ public class AdminActivity extends AppCompatActivity {
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
             outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-            // DO NOT CHANGE THE INDEX! Index change from -1 to 0 will order the orders reversed, BUT the clickListener will not work
+            //Index -1 -> older orders are placed to the bottom
 
             for (int k = 0; k < orderInAdminList.get(i).getDishList().size(); k += 2){
                 LayoutInflater innerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -139,7 +139,8 @@ public class AdminActivity extends AppCompatActivity {
 
             final LinearLayout linearLayoutOrder = findViewById(R.id.linearLayoutOrder);
             this.defaultColor = linearLayoutOrder.getSolidColor(); // I don´t know the default color in Android Studio, so it is fetched here.
-            linearLayoutOrder.setId(i); // This line is required so that not all orders are placed into the same linearLayoutOrder.
+            linearLayoutOrder.setId(orderInAdminList.size() - (i + 1)); // This line is required so that not all orders are placed into the same linearLayoutOrder.
+            //The setID is indexed as if the IDs are counting from top to bottom (0, 1, 2...)
             final int linearLayoutOrderIndex = linearLayoutOrder.getId();
 
             this.linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setOnClickListener(new View.OnClickListener() {
