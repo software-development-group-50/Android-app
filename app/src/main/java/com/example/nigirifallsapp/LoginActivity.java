@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView error_pw; //error message password
     RequestQueue requestQueue;
     String phoneNumber;
-    SharedPreferences sp;
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -36,20 +36,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Checking if user is already logged in
-        sp = getSharedPreferences("login", MODE_PRIVATE);
-
-        if (sp.getBoolean("logged", false)) {
-            Intent menuIntent = new Intent(this, MenuActivity.class);
-            startActivity(menuIntent);
-        }
-
         phoneNr = findViewById(R.id.input_nr);
         password = findViewById(R.id.input_password);
         this.loginBtn = findViewById(R.id.login_login);
         this.registerBtn = findViewById(R.id.Register1);
         error_pw = findViewById(R.id.error_pw);
         this.requestQueue = Volley.newRequestQueue(this);
+        this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -110,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onActualResponse(String response) {
         if (response.trim().equals(this.phoneNumber)) {
-            sp.edit().putBoolean("logged", true).apply();
+            this.sharedPreferences.edit().putBoolean("logged", true).apply();
             Intent menuIntent = new Intent(this, MenuActivity.class);
             startActivity(menuIntent);
         } else {
