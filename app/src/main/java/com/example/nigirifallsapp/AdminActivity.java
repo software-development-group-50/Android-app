@@ -2,8 +2,10 @@ package com.example.nigirifallsapp;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,13 @@ public class AdminActivity extends AppCompatActivity {
         this.buttonConfirm = findViewById(R.id.buttonConfirm);
         this.buttonFinish = findViewById(R.id.buttonFinish);
         this.linearLayoutAdmin = findViewById(R.id.linearLayoutAdmin);
+        this.chosenDishIndex = 0; //To prevent null-pointer exception
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // This line adds the back-button on the ActionBar
+
         this.sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
     }
 
@@ -112,8 +121,8 @@ public class AdminActivity extends AppCompatActivity {
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
-            outerInsertPoint.addView(orderInAdminView, 1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-            // The 1 index specifies that the element is added FIRST to the ScrollView
+            outerInsertPoint.addView(orderInAdminView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+            // The 0 index specifies that the element is added FIRST to the ScrollView
 
             for (int k = 0; k < orderInAdminList.get(i).getDishList().size(); k += 2){
                 LayoutInflater innerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -133,8 +142,8 @@ public class AdminActivity extends AppCompatActivity {
             final LinearLayout linearLayoutOrder = findViewById(R.id.linearLayoutOrder);
             this.defaultColor = linearLayoutOrder.getSolidColor(); // I don´t know the default color in Android Studio, so it is fetched here.
             // The +1 is needed because the text Orders has index 0, therefore, the getChildAt is indexed +1.
-            linearLayoutOrder.setId(i + 1); // This line is required so that not all orders are placed into the same linearLayoutOrder.
-            final int linearLayoutOrderIndex = linearLayoutOrder.getId();
+            linearLayoutOrder.setId(i); // This line is required so that not all orders are placed into the same linearLayoutOrder.
+            final int linearLayoutOrderIndex = linearLayoutOrder.getId(); //Aka i
 
             this.linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setOnClickListener(new View.OnClickListener() {
                 @Override
