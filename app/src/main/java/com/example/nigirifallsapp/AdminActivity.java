@@ -97,8 +97,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void onActualResponseChangeStatus(String response){
-        // Reloads all the orders, but not the text Orders.
-        //this.linearLayoutAdmin.removeViews(1, linearLayoutAdmin.getChildCount() - 1);
+        // Reloads all the orders
         this.linearLayoutAdmin.removeAllViews();
         sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
     }
@@ -116,12 +115,13 @@ public class AdminActivity extends AppCompatActivity {
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
 
             textOrders.setText(orderInAdminList.get(i).getOrderId());
-            textPickUpTime.setText(orderInAdminList.get(i).getPickUpTime());
+            String timeString = orderInAdminList.get(i).getPickUpTime();
+            textPickUpTime.setText(timeString.substring(0, timeString.length() - 3));
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
             outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-            // The -1 index specifies that the element is added LAST to the ScrollView
+            // DO NOT CHANGE THE INDEX! Index change from -1 to 0 will order the orders reversed, BUT the clickListener will not work
 
             for (int k = 0; k < orderInAdminList.get(i).getDishList().size(); k += 2){
                 LayoutInflater innerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
