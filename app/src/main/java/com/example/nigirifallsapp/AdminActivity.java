@@ -166,13 +166,13 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     public void onButtonConfirm(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Confirm&orderid=";
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Confirmed&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
 
     public void onButtonReady(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Ready&orderid=";
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Pickup-ready&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }

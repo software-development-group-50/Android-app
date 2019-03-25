@@ -1,12 +1,15 @@
 package com.example.nigirifallsapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -89,7 +92,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                         menuItem.setChecked(true);
                         // close drawer when item is tapped
                         drawerLayout.closeDrawers();
-
+                        onOptionsItemSelected(menuItem);
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
 
@@ -111,6 +114,16 @@ public class ConfirmationActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.nav_menu:
+                NavUtils.navigateUpFromSameTask(this); // Returns to Menu Activity
+                return true;
+            case R.id.nav_logout:
+                logOutAlert();
+                return true;
+            case R.id.nav_myOrders:
+                //Intent intent = new Intent(this, LoginActivity.class);
+                //startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -192,7 +205,35 @@ public class ConfirmationActivity extends AppCompatActivity {
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            NavUtils.navigateUpFromSameTask(this);
+            //NavUtils.navigateUpFromSameTask(this);
+            Intent intent = new Intent(this, MenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location, Login and Menu
+            startActivity(intent);
         }
+    }
+
+    private void logOutAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to log out?")
+                .setPositiveButton("Log out", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        logOut();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private void logOut() {
+        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+        sp.edit().putBoolean("logged", false).apply();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location and Login
+        startActivity(intent);
     }
 }

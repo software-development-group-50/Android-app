@@ -233,7 +233,10 @@ public class MenuActivity extends AppCompatActivity {
     private void logOut() {
         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         sp.edit().putBoolean("logged", false).apply();
-        NavUtils.navigateUpFromSameTask(this); // This clears the Menu activity from the activity stack. Only Login activity now.
+        //NavUtils.navigateUpFromSameTask(this); // This clears the Menu activity from the activity stack. Only Login activity now.
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location and Login
+        startActivity(intent);
     }
 
     private void changeTotalPrice() {
