@@ -39,6 +39,10 @@
             android:label="Menu"
             android:parentActivityName=".LoginActivity">
         </activity>
+        <activity android:name=".OrderHistory"
+            android:label="Your Orders"
+            android:parentActivityName=".MenuActivity">
+        </activity>
         <activity android:name=".CheckoutActivity"
             android:label="Checkout"
             android:parentActivityName=".MenuActivity">
