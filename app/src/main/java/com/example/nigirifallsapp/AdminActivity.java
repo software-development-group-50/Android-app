@@ -1,9 +1,12 @@
 package com.example.nigirifallsapp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ public class AdminActivity extends AppCompatActivity {
     private int chosenDishIndex;
     private int chosenDishID;
     private int defaultColor;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,14 @@ public class AdminActivity extends AppCompatActivity {
         this.buttonConfirm = findViewById(R.id.buttonConfirm);
         this.buttonFinish = findViewById(R.id.buttonFinish);
         this.linearLayoutAdmin = findViewById(R.id.linearLayoutAdmin);
+        this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        setTitle("Orders for " + this.sharedPreferences.getString("locationString", "error"));
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true); // This line adds the back-button on the ActionBar
+
         this.sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
     }
 
@@ -89,15 +101,15 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     private void onActualResponseChangeStatus(String response){
-        // Reloads all the orders, but not the text Orders.
-        this.linearLayoutAdmin.removeViews(1, linearLayoutAdmin.getChildCount() - 1);
+        // Reloads all the orders
+        this.linearLayoutAdmin.removeAllViews();
         sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
     }
 
     // Function for adding all orders to the ScrollView and adding ClickListeners to them
     private void addMenuToView(List<OrderInAdmin> orderInAdminList){
-        // Starts at 1 so the text Orders is not affected.
-        for (int i = 0; i < orderInAdminList.size(); i++){
+        // Reversed for-loop, since we want newest order on top
+        for (int i = orderInAdminList.size() - 1; i >= 0; i--){
             LayoutInflater outerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View orderInAdminView = outerLayoutInflater.inflate(R.layout.order_in_admin_layout, null);
             final int orderid = Integer.valueOf(orderInAdminList.get(i).getOrderId().trim());
@@ -106,14 +118,14 @@ public class AdminActivity extends AppCompatActivity {
             final TextView textPickUpTime = orderInAdminView.findViewById(R.id.textPickUpTime);
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
 
-            String timeString = orderInAdminList.get(i).getPickUpTime();
             textOrders.setText(orderInAdminList.get(i).getOrderId());
-            textPickUpTime.setText(timeString.substring(0, timeString.length()-3));
+            String timeString = orderInAdminList.get(i).getPickUpTime();
+            textPickUpTime.setText(timeString.substring(0, timeString.length() - 3));
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
-            outerInsertPoint.addView(orderInAdminView, 1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-            // The 1 index specifies that the element is added FIRST to the ScrollView
+            outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+            //Index -1 -> older orders are placed to the bottom
 
             for (int k = 0; k < orderInAdminList.get(i).getDishList().size(); k += 2){
                 LayoutInflater innerLayoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -127,13 +139,12 @@ public class AdminActivity extends AppCompatActivity {
 
                 ViewGroup innerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutOrder);
                 innerInsertPoint.addView(dishInOrderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
-                // The -1 index specifies that the element is added LAST to the ScrollView
             }
 
             final LinearLayout linearLayoutOrder = findViewById(R.id.linearLayoutOrder);
             this.defaultColor = linearLayoutOrder.getSolidColor(); // I don´t know the default color in Android Studio, so it is fetched here.
-            // The +1 is needed because the text Orders has index 0, therefore, the getChildAt is indexed +1.
-            linearLayoutOrder.setId(i + 1); // This line is required so that not all orders are placed into the same linearLayoutOrder.
+            linearLayoutOrder.setId(orderInAdminList.size() - (i + 1)); // This line is required so that not all orders are placed into the same linearLayoutOrder.
+            //The setID is indexed as if the IDs are counting from top to bottom (0, 1, 2...)
             final int linearLayoutOrderIndex = linearLayoutOrder.getId();
 
             this.linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setOnClickListener(new View.OnClickListener() {
@@ -148,20 +159,20 @@ public class AdminActivity extends AppCompatActivity {
         }
     }
 
-    public void onButtonNew(View view){
+    public void onButtonWaiting(View view){
         String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Waiting&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
 
     public void onButtonConfirm(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Confirm&orderid=";
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Confirmed&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
 
-    public void onButtonFinish(View view){
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Ready&orderid=";
+    public void onButtonReady(View view){
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Pickup-ready&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }

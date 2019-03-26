@@ -6,13 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".AdminActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/buttonFinish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onButtonFinish"
-        android:text="Ready"
         android:background="@color/colorSecondary"
+        android:onClick="onButtonReady"
+        android:text="Ready"
         app:layout_constraintBaseline_toBaselineOf="@+id/buttonConfirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -22,9 +32,9 @@
         android:id="@+id/buttonNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onButtonNew"
-        android:text="Waiting"
         android:background="@color/colorSecondary"
+        android:onClick="onButtonWaiting"
+        android:text="Waiting"
         app:layout_constraintBaseline_toBaselineOf="@+id/buttonConfirm"
         app:layout_constraintEnd_toStartOf="@+id/buttonConfirm"
         app:layout_constraintHorizontal_bias="0.5"
@@ -34,9 +44,11 @@
         android:id="@+id/buttonConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorSecondary"
         android:onClick="onButtonConfirm"
         android:text="Confirm"
-        android:background="@color/colorSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonFinish"
         app:layout_constraintHorizontal_bias="0.5"
@@ -51,24 +63,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <LinearLayout
             android:id="@+id/linearLayoutAdmin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Orders"
-                android:typeface="serif"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="40sp" />
-        </LinearLayout>
+            android:orientation="vertical" />
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
