@@ -70,6 +70,10 @@ public class RegisterActivity extends AppCompatActivity {
             url += password;
             url += "&name=";
             url += name;
+            url += "&location=";
+            SharedPreferences sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+            String location = sharedPreferences.getString("locationString", "error");
+            url += location;
             sendRequest(url);
         } else {
             if (!confirm.equals(password)) {
