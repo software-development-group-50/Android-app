@@ -104,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
     private void onActualResponse(String response) {
         if (response.trim().equals(this.phoneNumber)) {
             this.sharedPreferences.edit().putBoolean("logged", true).apply();
+            this.sharedPreferences.edit().putString("phonenumber", response.trim()).apply();
             Intent menuIntent = new Intent(this, MenuActivity.class);
             startActivity(menuIntent);
         } else {

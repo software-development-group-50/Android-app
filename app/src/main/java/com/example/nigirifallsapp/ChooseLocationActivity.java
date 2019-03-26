@@ -9,20 +9,18 @@ import android.view.View;
 
 public class ChooseLocationActivity extends AppCompatActivity {
 
-    SharedPreferences sharedPreferencesLocation;
-    SharedPreferences sharedPreferencesLogin;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose_location_activity_layout);
 
-        this.sharedPreferencesLocation = getSharedPreferences("location", MODE_PRIVATE);
-        this.sharedPreferencesLogin = getSharedPreferences("login", MODE_PRIVATE);
+        this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE); // Rename from login
 
         //Checking if user is already logged in
         //With this method the Login Acticity is never opened, so when the user logs out, this activity will open, not Login.
-        if (this.sharedPreferencesLogin.getBoolean("logged", false)) {
+        if (this.sharedPreferences.getBoolean("logged", false)) {
             Intent menuIntent = new Intent(this, MenuActivity.class);
             startActivity(menuIntent);
         }
@@ -35,19 +33,19 @@ public class ChooseLocationActivity extends AppCompatActivity {
     public void onButtonOslo(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        this.sharedPreferencesLocation.edit().putString("locationString", "Oslo").apply();
+        this.sharedPreferences.edit().putString("locationString", "Oslo").apply();
     }
 
     public void onButtonTrondheim(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        this.sharedPreferencesLocation.edit().putString("locationString", "Trondheim").apply();
+        this.sharedPreferences.edit().putString("locationString", "Trondheim").apply();
     }
 
     public void onButtonBergen(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-        this.sharedPreferencesLocation.edit().putString("locationString", "Bergen").apply();
+        this.sharedPreferences.edit().putString("locationString", "Bergen").apply();
     }
 
 

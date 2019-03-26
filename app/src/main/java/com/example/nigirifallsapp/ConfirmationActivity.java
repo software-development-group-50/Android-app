@@ -33,6 +33,7 @@ public class ConfirmationActivity extends AppCompatActivity {
     private int hourOfDay;
     private int min;
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
 
     Thread thread = new Thread() {
@@ -83,8 +84,8 @@ public class ConfirmationActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.icon_menu);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
+        this.navigationView = findViewById(R.id.nav_view);
+        this.navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -205,10 +206,10 @@ public class ConfirmationActivity extends AppCompatActivity {
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            //NavUtils.navigateUpFromSameTask(this);
-            Intent intent = new Intent(this, MenuActivity.class);
+            NavUtils.navigateUpFromSameTask(this);
+            /*Intent intent = new Intent(this, MenuActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location, Login and Menu
-            startActivity(intent);
+            startActivity(intent);*/
         }
     }
 
@@ -223,15 +224,23 @@ public class ConfirmationActivity extends AppCompatActivity {
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                navigationView.getMenu().getItem(2).setChecked(false);
                 dialog.dismiss();
+            }
+        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                navigationView.getMenu().getItem(2).setChecked(false);
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void logOut() {
         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         sp.edit().putBoolean("logged", false).apply();
+        sp.edit().putString("phonenumber", null).apply();
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location and Login
         startActivity(intent);

@@ -33,7 +33,7 @@ public class AdminActivity extends AppCompatActivity {
     private int chosenDishIndex;
     private int chosenDishID;
     private int defaultColor;
-    SharedPreferences sharedPreferencesLocation;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +43,8 @@ public class AdminActivity extends AppCompatActivity {
         this.buttonConfirm = findViewById(R.id.buttonConfirm);
         this.buttonFinish = findViewById(R.id.buttonFinish);
         this.linearLayoutAdmin = findViewById(R.id.linearLayoutAdmin);
-        this.sharedPreferencesLocation = getSharedPreferences("location", MODE_PRIVATE);
-        setTitle("Orders for " + this.sharedPreferencesLocation.getString("locationString", "error"));
+        this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        setTitle("Orders for " + this.sharedPreferences.getString("locationString", "error"));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
