@@ -26,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import android.widget.Button;
 import android.support.v7.widget.Toolbar;
@@ -45,6 +46,7 @@ public class MenuActivity extends AppCompatActivity {
     Menu menu;
     Order order;
     private DrawerLayout drawerLayout;
+    private MaterialSearchView searchView;
 
 
     @Override
@@ -52,9 +54,10 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity_layout);
         this.requestQueue = Volley.newRequestQueue(this);
-        this.sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
+        this.sendRequest("https://org.ntnu.no/nigiriapp/searchfordishes.php/?search="); //http://folk.ntnu.no/magnuti/getalldish.php
         this.buttonCheckout = findViewById(R.id.buttonCheckout);
         this.drawerLayout = findViewById(R.id.drawer_layout);
+        this.searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,6 +80,15 @@ public class MenuActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        //return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.search_view, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+        return true;
     }
 
     @Override
