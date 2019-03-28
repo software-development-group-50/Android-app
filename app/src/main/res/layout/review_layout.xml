@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/reviewOuter">
+    android:id="@+id/reviewOuter"
+    android:background="@drawable/customborder">
 
     <TextView
         android:id="@+id/reviewOrderID"
@@ -28,7 +29,7 @@
         android:textSize="18sp"
         android:textColor="@color/textColorDark"
         app:layout_constraintBaseline_toBaselineOf="@+id/reviewOrderID"
-        app:layout_constraintEnd_toStartOf="@+id/reviewComment"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/reviewOrderID"
         tools:text="Stars" />
@@ -38,9 +39,9 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textColor="@color/textColorDark"
-        app:layout_constraintBaseline_toBaselineOf="@+id/reviewOrderID"
+        app:layout_constraintTop_toBottomOf="@id/reviewOrderID"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/reviewStars"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="Comment" />
 </android.support.constraint.ConstraintLayout>
