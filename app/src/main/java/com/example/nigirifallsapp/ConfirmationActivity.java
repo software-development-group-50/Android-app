@@ -263,8 +263,8 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     public void sendReview(float stars, String comment){
         String combindeString = getOrderID() + "|" + Float.toString(stars) + "|" + comment;
-        String url = "http://org.ntnu.no/nigiriapp/sendreview.php/?OrderID=" + getOrderID()
-                + "?stars=" + Float.toString(stars) + "?comment=" + comment;
+        String url = "http://org.ntnu.no/nigiriapp/sendreview.php/?orderID=" + getOrderID()
+                + "?stars=" + Float.toString(stars) + "?review=" + comment;
         sendRequest(url);
     }
 
