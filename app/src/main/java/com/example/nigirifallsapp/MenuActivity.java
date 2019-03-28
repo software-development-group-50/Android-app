@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -45,6 +46,7 @@ public class MenuActivity extends AppCompatActivity {
     Menu menu;
     Order order;
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
 
     @Override
@@ -61,8 +63,9 @@ public class MenuActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.icon_menu);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
+        this.navigationView = findViewById(R.id.nav_view);
+        this.navigationView.getMenu().getItem(0).setChecked(true);
+        this.navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -224,16 +227,27 @@ public class MenuActivity extends AppCompatActivity {
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                navigationView.getMenu().getItem(0).setChecked(true);
                 dialog.dismiss();
+            }
+        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                navigationView.getMenu().getItem(0).setChecked(true);
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void logOut() {
         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         sp.edit().putBoolean("logged", false).apply();
+        sp.edit().putString("phonenumber", null).apply();
         NavUtils.navigateUpFromSameTask(this); // This clears the Menu activity from the activity stack. Only Login activity now.
+        /*Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location and Login
+        startActivity(intent);*/
     }
 
     private void changeTotalPrice() {

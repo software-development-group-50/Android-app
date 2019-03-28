@@ -15,19 +15,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChooseLocationActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".ChooseLocationActivity"
+            android:label="Nigiri Falls - Choose Location">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity"
+            android:label="Login"
+            android:parentActivityName=".ChooseLocationActivity">
+        </activity>
         <activity android:name=".AdminActivity"
+            android:label="Orders for [location]"
             android:parentActivityName=".LoginActivity">
         </activity>
         <activity android:name=".RegisterActivity"
-            android:noHistory="true"
+            android:label="Register"
             android:parentActivityName=".LoginActivity">
         </activity>
         <activity android:name=".MenuActivity"
