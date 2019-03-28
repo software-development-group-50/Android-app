@@ -104,6 +104,8 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         this.placeOrderBtn.setEnabled(false);
         this.url += "&time=";
         this.url += Integer.toString(this.hourOfDay) + ":" + Integer.toString(this.min) + ":00";
+        this.url += "&location=";
+        this.url += sharedPreferences.getString("locationString","error");
         this.url += "&userID=";
         this.url += sharedPreferences.getString("phonenumber", "error");
         Log.e("Url", url);
