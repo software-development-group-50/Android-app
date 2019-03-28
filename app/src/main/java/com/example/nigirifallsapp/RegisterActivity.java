@@ -28,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextView error_confirm;
     TextView error_nr;
     RequestQueue requestQueue;
+    SharedPreferences sharedPreferences;
 
 
 
@@ -44,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
         error_confirm = (TextView) findViewById(R.id.error_confirm);
         error_nr = (TextView) findViewById(R.id.error_nr);
         this.requestQueue = Volley.newRequestQueue(this);
+        this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -104,6 +106,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void onActualResponse(String response){
         if(response.trim().equals("1")){
+            this.sharedPreferences.edit().putBoolean("logged", true).apply();
+            this.sharedPreferences.edit().putString("phonenumber", response.trim()).apply();
             Intent menuIntent = new Intent(this, MenuActivity.class);
             startActivity(menuIntent);
         } else {
