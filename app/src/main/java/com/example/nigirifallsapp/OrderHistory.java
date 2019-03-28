@@ -138,7 +138,7 @@ public class OrderHistory extends AppCompatActivity {
             textPickUpTime.setText(timeString.substring(0, timeString.length() - 3));
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
-            ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
+            ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutHistory);
             outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
             //Index -1 -> older orders are placed to the bottom
 
