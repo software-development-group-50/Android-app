@@ -2,6 +2,7 @@ package com.example.nigirifallsapp;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.design.widget.NavigationView;
@@ -91,8 +92,8 @@ public class AdminActivity extends AppCompatActivity {
             case R.id.nav_admin_orders:
                 return true;
             case R.id.nav_admin_reviews:
-                //Intent intent = new Intent(this, LoginActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(this, ReviewsActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.nav_logout:
                 logOutAlert();
