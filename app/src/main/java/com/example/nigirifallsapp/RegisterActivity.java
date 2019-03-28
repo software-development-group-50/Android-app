@@ -105,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void onActualResponse(String response){
-        if(response.trim().equals("1")){
+        if(!response.trim().equals("Error 377: This phone number is already registered.")) {
             this.sharedPreferences.edit().putBoolean("logged", true).apply();
             this.sharedPreferences.edit().putString("phonenumber", response.trim()).apply();
             Intent menuIntent = new Intent(this, MenuActivity.class);
