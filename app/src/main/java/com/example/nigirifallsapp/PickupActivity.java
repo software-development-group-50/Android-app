@@ -92,7 +92,12 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
             this.errorText.setText("");
             if (time_selected >= (time_now + 0.5 )) {
                 this.bool = true;
-                this.textTime.setText("Time:      " + hourOfDay + ":" + min);
+                if(min < 10) {
+                    this.textTime.setText("Time:      " + hourOfDay + ":0" + min);
+                }
+                else{
+                    this.textTime.setText("Time:      " + hourOfDay + ":" + min);
+                }
             } else {
                 this.bool = false;
                 this.errorText.setText("Invalid time! Cannot choose a pick-up time earlier than in 30 minutes");
