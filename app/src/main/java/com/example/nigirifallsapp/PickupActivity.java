@@ -75,20 +75,18 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
 
     @Override
     public void onTimeSet(TimePicker view, int hour, int min) {
-        //Log.e("hour", Integer.toString(hour));
-        //Log.e("min", Integer.toString(min));
+        //Cancer code
+        this.textTime.setText("");
+        this.errorText.setText("");
+
         this.hourOfDay = hour;
         this.min = min;
         double time_selected = (double) (hour) + ((double) min / 60);
-        //Log.e("time_selected", Double.toString(time_selected));
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         int currentMin = calendar.get(Calendar.MINUTE);
         double time_now = (double) currentHour + ((double) currentMin / 60);
-        //Log.e("time_now", Double.toString(time_now));
 
-        this.textTime.setText("");
-        this.errorText.setText("");
         if (hour < 8) {
             this.placeOrderBtn.setEnabled(false);
             this.errorText.setText("We do not deliver before 08:00");
@@ -99,14 +97,14 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
             this.placeOrderBtn.setEnabled(false);
             int orderHour = currentHour;
             int orderMin = currentMin + 30;
-            if(orderMin < 59){
+            if(orderMin > 59){
                 orderHour++;
-                orderMin -= 30;
+                orderMin -= 60;
             }
-            if (currentMin < 10) {
-                this.errorText.setText("Cannot choose a pick-up time earlier than " + Integer.toString(orderHour) + ":0" + Integer.toString(orderMin + 30));
+            if (orderMin < 10) {
+                this.errorText.setText("Cannot choose a pick-up time earlier than " + Integer.toString(orderHour) + ":0" + Integer.toString(orderMin));
             } else {
-                this.errorText.setText("Cannot choose a pick-up time earlier than " + Integer.toString(currentHour) + ":" + Integer.toString(currentMin + 30));
+                this.errorText.setText("Cannot choose a pick-up time earlier than " + Integer.toString(orderHour) + ":" + Integer.toString(orderMin));
             }
         } else {
             this.placeOrderBtn.setEnabled(true);
