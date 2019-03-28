@@ -11,14 +11,14 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="388dp"
+        android:layout_height="176dp"
         app:srcCompat="@mipmap/logo_foreground" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fix image and text"
+        android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 </LinearLayout>
