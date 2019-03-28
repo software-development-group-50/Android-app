@@ -34,6 +34,7 @@ public class AdminActivity extends AppCompatActivity {
     private int chosenDishID;
     private int defaultColor;
     SharedPreferences sharedPreferences;
+    String location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +45,19 @@ public class AdminActivity extends AppCompatActivity {
         this.buttonFinish = findViewById(R.id.buttonFinish);
         this.linearLayoutAdmin = findViewById(R.id.linearLayoutAdmin);
         this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-        setTitle("Orders for " + this.sharedPreferences.getString("locationString", "error"));
+        this.location = this.sharedPreferences.getString("locationString", "error");
+        setTitle("Orders for " + this.location);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true); // This line adds the back-button on the ActionBar
 
-        this.sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
+        //sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
+        String url = "http://org.ntnu.no/nigiriapp/getallorders.php/?location=";
+        url += this.location;
+
+        this.sendRequestGetAllOrders(url);
     }
 
     // Function for sending a HTTP request to the PHP-script
@@ -103,7 +109,11 @@ public class AdminActivity extends AppCompatActivity {
     private void onActualResponseChangeStatus(String response){
         // Reloads all the orders
         this.linearLayoutAdmin.removeAllViews();
-        sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
+        //sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
+        String url = "http://org.ntnu.no/nigiriapp/getallorders.php/?location=";
+        url += this.location;
+
+        this.sendRequestGetAllOrders(url);
     }
 
     // Function for adding all orders to the ScrollView and adding ClickListeners to them
