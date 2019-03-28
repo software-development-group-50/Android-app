@@ -231,7 +231,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.setGravity(Gravity.CENTER_HORIZONTAL);
 
-        RatingBar rb = new RatingBar(this);
+        final RatingBar rb = new RatingBar(this);
         rb.setNumStars(5);
         rb.setRating(3.5f);
         rb.setMax(5);
@@ -240,7 +240,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         ll.addView(rb);
 
 
-        EditText review = new EditText(this);
+        final EditText review = new EditText(this);
         review.setGravity(Gravity.CENTER_HORIZONTAL);
         review.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT,1));
         ll.addView(review);
@@ -249,6 +249,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        sendReview(rb.getRating(), review.getText().toString());
                         dialog.dismiss();
                     }
                 });
@@ -258,6 +259,13 @@ public class ConfirmationActivity extends AppCompatActivity {
         TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
         messageView.setTextSize(20);
+    }
+
+    public void sendReview(float stars, String comment){
+        String combindeString = getOrderID() + "|" + Float.toString(stars) + "|" + comment;
+        String url = "http://org.ntnu.no/nigiriapp/sendreview.php/?OrderID=" + getOrderID()
+                + "?stars=" + Float.toString(stars) + "?comment=" + comment;
+        sendRequest(url);
     }
 
     private void logOutAlert() {
