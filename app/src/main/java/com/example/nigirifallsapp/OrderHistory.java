@@ -196,6 +196,18 @@ public class OrderHistory extends AppCompatActivity {
         sp.edit().putBoolean("logged", false).apply();
         NavUtils.navigateUpFromSameTask(this); // This clears the Menu activity from the activity stack. Only Login activity now.
     }
+
+    @Override
+    public void onBackPressed() {
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            NavUtils.navigateUpFromSameTask(this);
+            /*Intent intent = new Intent(this, MenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location, Login and Menu
+            startActivity(intent);*/
+        }
+    }
 }
 
 

@@ -123,8 +123,8 @@ public class ConfirmationActivity extends AppCompatActivity {
                 logOutAlert();
                 return true;
             case R.id.nav_myOrders:
-                //Intent intent = new Intent(this, LoginActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(this, OrderHistory.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
