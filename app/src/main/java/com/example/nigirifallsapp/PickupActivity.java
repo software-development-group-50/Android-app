@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,12 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import java.util.Calendar;
 
 public class PickupActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
@@ -35,9 +36,7 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     RequestQueue requestQueue;
     TextView errorText;
     TextView textTime;
-    Boolean bool = true;
     SharedPreferences sharedPreferences;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,9 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         this.errorText = findViewById(R.id.error_message_pickup);
         this.placeOrderBtn = findViewById(R.id.place_order);
         this.textTime = findViewById(R.id.textTime);
-        Button chooseTime = (Button) findViewById(R.id.button);
+        Button chooseTime = findViewById(R.id.button);
+
+        this.placeOrderBtn.setEnabled(false);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,43 +79,56 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     }
 
     @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int min){
-        this.hourOfDay = hourOfDay;
-        this.min = min;
-        double time_selected = hourOfDay + min/60;
-        Calendar c = Calendar.getInstance();
-        int hour_ = c.get(Calendar.HOUR_OF_DAY);
-        int min_ = c.get(Calendar.MINUTE);
-        double time_now = hour_ + min_/60;
+    public void onTimeSet(TimePicker view, int hour, int min) {
+        //Cancer code
+        this.textTime.setText("");
+        this.errorText.setText("");
 
-        for (int i = 0;i <1000;i++) {
-            this.textTime.setText("");
-            this.errorText.setText("");
-            if (time_selected >= (time_now + 0.5 )) {
-                this.bool = true;
-                if(min < 10) {
-                    this.textTime.setText("Time:      " + hourOfDay + ":0" + min);
-                }
-                else{
-                    this.textTime.setText("Time:      " + hourOfDay + ":" + min);
-                }
-            } else {
-                this.bool = false;
-                this.errorText.setText("Invalid time! Cannot choose a pick-up time earlier than in 30 minutes");
+        this.hourOfDay = hour;
+        this.min = min;
+        double time_selected = (double) (hour) + ((double) min / 60);
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMin = calendar.get(Calendar.MINUTE);
+        double time_now = (double) currentHour + ((double) currentMin / 60);
+
+        if (hour < 8) {
+            this.placeOrderBtn.setEnabled(false);
+            this.errorText.setText("We do not deliver before 08:00");
+        } else if (hour >= 22) {
+            this.placeOrderBtn.setEnabled(false);
+            this.errorText.setText("We do not deliver after 22:00");
+        } else if (time_selected < (time_now + 0.5)) {
+            this.placeOrderBtn.setEnabled(false);
+            int orderHour = currentHour;
+            int orderMin = currentMin + 30;
+            if (orderMin > 59) {
+                orderHour++;
+                orderMin -= 60;
             }
+            if (orderMin < 10) {
+                this.errorText.setText("Cannot choose a pick-up time earlier than " + Integer.toString(orderHour) + ":0" + Integer.toString(orderMin));
+            } else {
+                this.errorText.setText("Cannot choose a pick-up time earlier than " + Integer.toString(orderHour) + ":" + Integer.toString(orderMin));
+            }
+        } else {
+            this.placeOrderBtn.setEnabled(true);
+            this.textTime.setText("Time:      " + hour + ":" + min);
         }
+
     }
 
-    public void onButtonPlaceOrder(View view){
+    public void onButtonPlaceOrder(View view) {
         this.placeOrderBtn.setEnabled(false);
         this.url += "&time=";
         this.url += Integer.toString(this.hourOfDay) + ":" + Integer.toString(this.min) + ":00";
         this.url += "&location=";
-        this.url += sharedPreferences.getString("locationString","error");
+        this.url += sharedPreferences.getString("locationString", "error");
         this.url += "&userID=";
         this.url += sharedPreferences.getString("phonenumber", "error");
-        Log.e("Url", url);
+        //Log.e("Url", url);
         sendRequest(this.url);
+
     }
 
     // Function for sending a HTTP request to the PHP-script
