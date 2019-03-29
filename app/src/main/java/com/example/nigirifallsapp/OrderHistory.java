@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.DialogPreference;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
@@ -203,9 +204,23 @@ public class OrderHistory extends AppCompatActivity {
     }
 
     public void onCancelButton(View view) {
-        String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
-        url += Integer.toString(this.chosenDishID);
-        this.sendRequestChangeStatus(url);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to cancel your order?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
+                url += Integer.toString(chosenDishID);
+                sendRequestChangeStatus(url);
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     // Function for sending a HTTP request to the PHP-script
