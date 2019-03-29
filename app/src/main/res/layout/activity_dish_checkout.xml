@@ -16,7 +16,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textColor="@color/textColorDark"
         app:layout_constraintEnd_toStartOf="@+id/textPrice"
         app:layout_constraintHorizontal_bias="0.0"

@@ -18,7 +18,7 @@
         <activity android:name=".ReviewsActivity"></activity>
         <activity
             android:name=".ChooseLocationActivity"
-            android:label="Nigiri Falls - Choose Location">
+            android:label="Nigiri Falls">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
