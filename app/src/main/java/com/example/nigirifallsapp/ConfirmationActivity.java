@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,10 +38,12 @@ public class ConfirmationActivity extends AppCompatActivity {
     private String orderStatus = "Error";
     private String pickUpTime = "68:23:20";
     RequestQueue requestQueue;
+    RequestQueue requestSetQueue;
     private int hourOfDay;
     private int min;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    boolean reviewSent;
 
 
 
@@ -50,7 +53,7 @@ public class ConfirmationActivity extends AppCompatActivity {
             int count = 0;
             while(count < 100) {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                 }
 
@@ -78,6 +81,8 @@ public class ConfirmationActivity extends AppCompatActivity {
         this.orderID = extras.getString(PickupActivity.OrderIDIntent);
 
         this.requestQueue = Volley.newRequestQueue(this);
+
+        this.requestSetQueue = Volley.newRequestQueue(this);
         TextView textView2 = findViewById(R.id.textView2);
         String text = "Your order has been registered! Ready for pickup in about 30 min. \n\n\nYour pickup reference is: \n\n ";
         text += getOrderID() +"\n\n\n\n";
@@ -116,7 +121,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         statusTextView.setTextColor(getResources().getColor(R.color.waitingColor));
         statusTextView.setTextSize(24);
         thread.start();
-        requestReview();
+        reviewSent = false;
     }
 
     @Override
@@ -161,7 +166,8 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     private void requestOrderInfo() {
         String url = "http://org.ntnu.no/nigiriapp/getorder.php/?OrderID="; // Change URL
-        url += getOrderID();
+        String tempOrderID = getOrderID().replaceAll("\\s", "");
+        url += tempOrderID;
         sendRequest(url);
     }
 
@@ -182,7 +188,6 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         requestQueue.add(stringRequest);
     }
-
     private void onActualResponse(String response) {
         String[] orderInfo = response.split("\\|");
         this.pickUpTime = orderInfo[1];
@@ -197,13 +202,17 @@ public class ConfirmationActivity extends AppCompatActivity {
         switch (orderStatus) {
             case "Waiting":
                 statusTextView.setTextColor(getResources().getColor(R.color.waitingColor));
-                requestReview();
                 break;
             case "Confirmed":
                 statusTextView.setTextColor(getResources().getColor(R.color.confirmedColor));
                 break;
             case "Pickup-ready":
                 statusTextView.setTextColor(getResources().getColor(R.color.pickupColor));
+                if (!reviewSent) {
+                requestReview();
+                //reviewSent = true;
+                }
+
                 break;
             case "Canceled":
                 statusTextView.setTextColor(getResources().getColor(R.color.canceledColor));
@@ -223,7 +232,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         }
     }
 
-    public void requestReview() {
+    private void requestReview() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LinearLayout ll = new LinearLayout(this);
@@ -250,6 +259,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sendReview(rb.getRating(), review.getText().toString());
+                        reviewSent = true;
                         dialog.dismiss();
                     }
                 });
@@ -262,10 +272,30 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
 
     public void sendReview(float stars, String comment){
-        String combindeString = getOrderID() + "|" + Float.toString(stars) + "|" + comment;
-        String url = "http://org.ntnu.no/nigiriapp/sendreview.php/?orderID=" + getOrderID()
-                + "?stars=" + Float.toString(stars) + "?review=" + comment;
-        sendRequest(url);
+        String orderID = getOrderID();
+        orderID = orderID.replaceAll("\\s","");
+        String url = "http://org.ntnu.no/nigiriapp/sendreview.php/?orderID=" + orderID
+                + "&stars=" + Float.toString(stars) + "&review=" + comment;
+        url = url.replaceAll("\\s","%20");
+        System.out.println(url);
+
+        sendSetRequest(url);
+    }
+
+    private void sendSetRequest(String url) {
+        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Response", response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void     onErrorResponse(VolleyError error) {
+             //   Log.d("Error.response", response);
+            }
+        });
+        requestSetQueue.add(stringRequest);
     }
 
     private void logOutAlert() {
