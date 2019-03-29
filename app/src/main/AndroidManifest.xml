@@ -15,28 +15,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChooseLocationActivity"
-            android:label="Choose Location">
+        <activity android:name=".ReviewsActivity"></activity>
+        <activity
+            android:name=".ChooseLocationActivity"
+            android:label="Nigiri Falls">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:label="Login"
-            android:parentActivityName=".ChooseLocationActivity">
-        </activity>
-        <activity android:name=".AdminActivity"
+            android:parentActivityName=".ChooseLocationActivity"></activity>
+        <activity
+            android:name=".AdminActivity"
             android:label="Orders for [location]"
-            android:parentActivityName=".LoginActivity">
-        </activity>
-        <activity android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity"></activity>
+        <activity
+            android:name=".RegisterActivity"
             android:label="Register"
-            android:parentActivityName=".LoginActivity">
-        </activity>
-        <activity android:name=".MenuActivity"
+            android:parentActivityName=".LoginActivity"></activity>
+        <activity
+            android:name=".MenuActivity"
             android:label="Menu"
+
             android:parentActivityName=".LoginActivity">
         </activity>
         <activity android:name=".OrderHistory"
@@ -45,16 +49,15 @@
         </activity>
         <activity android:name=".CheckoutActivity"
             android:label="Checkout"
-            android:parentActivityName=".MenuActivity">
-        </activity>
-        <activity android:name=".PickupActivity"
+            android:parentActivityName=".MenuActivity"></activity>
+        <activity
+            android:name=".PickupActivity"
             android:label="Pick-up time"
-            android:parentActivityName=".CheckoutActivity">
-        </activity>
-        <activity android:name=".ConfirmationActivity"
+            android:parentActivityName=".CheckoutActivity"></activity>
+        <activity
+            android:name=".ConfirmationActivity"
             android:label="Confirmation"
-            android:parentActivityName=".MenuActivity">
-        </activity>
+            android:parentActivityName=".MenuActivity"></activity>
     </application>
 
 </manifest>

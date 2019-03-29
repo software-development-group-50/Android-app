@@ -13,7 +13,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,19 +38,22 @@ public class ConfirmationActivity extends AppCompatActivity {
     private String orderStatus = "Error";
     private String pickUpTime = "68:23:20";
     RequestQueue requestQueue;
+    RequestQueue requestSetQueue;
     private int hourOfDay;
     private int min;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
+    boolean reviewSent;
+
 
 
     Thread thread = new Thread() {
         @Override
         public void run() {
             int count = 0;
-            while(count < 100) {
+            while(count < 10000) {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                 }
 
@@ -70,6 +81,8 @@ public class ConfirmationActivity extends AppCompatActivity {
         this.orderID = extras.getString(PickupActivity.OrderIDIntent);
 
         this.requestQueue = Volley.newRequestQueue(this);
+
+        this.requestSetQueue = Volley.newRequestQueue(this);
         TextView textView2 = findViewById(R.id.textView2);
         String text;
         if(min < 10){
@@ -113,6 +126,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         statusTextView.setTextColor(getResources().getColor(R.color.waitingColor));
         statusTextView.setTextSize(24);
         thread.start();
+        reviewSent = false;
     }
 
     @Override
@@ -157,7 +171,8 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     private void requestOrderInfo() {
         String url = "http://org.ntnu.no/nigiriapp/getorder.php/?OrderID="; // Change URL
-        url += getOrderID();
+        String tempOrderID = getOrderID().replaceAll("\\s", "");
+        url += tempOrderID;
         sendRequest(url);
     }
 
@@ -178,7 +193,6 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         requestQueue.add(stringRequest);
     }
-
     private void onActualResponse(String response) {
         String[] orderInfo = response.split("\\|");
         this.pickUpTime = orderInfo[1];
@@ -199,6 +213,11 @@ public class ConfirmationActivity extends AppCompatActivity {
                 break;
             case "Pick-up ready":
                 statusTextView.setTextColor(getResources().getColor(R.color.pickupColor));
+                if (!reviewSent) {
+                requestReview();
+                reviewSent = true;
+                }
+
                 break;
             case "Canceled":
                 statusTextView.setTextColor(getResources().getColor(R.color.canceledColor));
@@ -218,6 +237,72 @@ public class ConfirmationActivity extends AppCompatActivity {
         }
     }
 
+    private void requestReview() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        LinearLayout ll = new LinearLayout(this);
+        ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0));
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        final RatingBar rb = new RatingBar(this);
+        rb.setNumStars(5);
+        rb.setRating(3.5f);
+        rb.setMax(5);
+        rb.setStepSize(0.5f);
+        rb.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, 1));
+        ll.addView(rb);
+
+
+        final EditText review = new EditText(this);
+        review.setGravity(Gravity.CENTER_HORIZONTAL);
+        review.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT,1));
+        ll.addView(review);
+
+        builder.setMessage("Please leave us a review!")
+                .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendReview(rb.getRating(), review.getText().toString());
+                        //reviewSent = true;
+                        dialog.dismiss();
+                    }
+                });
+        builder.setView(ll);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
+        messageView.setTextSize(20);
+    }
+
+    public void sendReview(float stars, String comment){
+        String orderID = getOrderID();
+        orderID = orderID.replaceAll("\\s","");
+        String url = "http://org.ntnu.no/nigiriapp/sendreview.php/?orderID=" + orderID
+                + "&stars=" + Float.toString(stars) + "&review=" + comment;
+        url = url.replaceAll("\\s","%20");
+        System.out.println(url);
+
+        sendSetRequest(url);
+    }
+
+    private void sendSetRequest(String url) {
+        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Response", response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void     onErrorResponse(VolleyError error) {
+             //   Log.d("Error.response", response);
+            }
+        });
+        requestSetQueue.add(stringRequest);
+    }
+
     private void logOutAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to log out?")
@@ -229,6 +314,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 navigationView.getMenu().getItem(2).setChecked(false);
                 dialog.dismiss();
             }

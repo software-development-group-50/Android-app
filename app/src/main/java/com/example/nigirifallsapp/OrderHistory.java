@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.DialogPreference;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,6 +43,8 @@ public class OrderHistory extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String userID;
     private DrawerLayout drawerLayout;
+    private int chosenDishID;
+    Button cancelButton;
 
 
     @Override
@@ -52,6 +56,7 @@ public class OrderHistory extends AppCompatActivity {
         this.drawerLayout = findViewById(R.id.drawer_layout);
         this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         this.userID = sharedPreferences.getString("phonenumber", "error");
+        this.cancelButton = findViewById(R.id.cancelButton);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,7 +100,7 @@ public class OrderHistory extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void sendRequestGetUserOrders(String url){
+    private void sendRequestGetUserOrders(String url) {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -103,7 +108,7 @@ public class OrderHistory extends AppCompatActivity {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error){
+            public void onErrorResponse(VolleyError error) {
 
             }
         });
@@ -111,7 +116,7 @@ public class OrderHistory extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void onActualResponseGetUserOrders(String response){
+    private void onActualResponseGetUserOrders(String response) {
         List<OrderInAdmin> orderList = new ArrayList<>();
         String[] arrayWithStringOrders = response.split(";");
         for (String elementsInStringArray : arrayWithStringOrders) {
@@ -167,7 +172,7 @@ public class OrderHistory extends AppCompatActivity {
                     linearLayoutHistory.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
                     linearLayoutHistory.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
                     chosenDishIndex = linearLayoutOrderIndex;
-                    //chosenDishID = orderid;
+                    chosenDishID = orderid;
                 }
             });
         }
@@ -190,6 +195,7 @@ public class OrderHistory extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void logOut() {
         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         sp.edit().putBoolean("logged", false).apply();
@@ -210,6 +216,54 @@ public class OrderHistory extends AppCompatActivity {
             startActivity(intent);*/
         }
     }
+
+    public void onCancelButton(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to cancel your order?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
+                url += Integer.toString(chosenDishID);
+                sendRequestChangeStatus(url);
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    // Function for sending a HTTP request to the PHP-script
+    private void sendRequestChangeStatus(String url) {
+        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                onActualResponseChangeStatus(response); // The extra function is needed because of the scope of the function
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
+    private void onActualResponseChangeStatus(String response) {
+        // Reloads all the orders
+        this.linearLayoutHistory.removeAllViews();
+        String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
+        url += Integer.toString(this.chosenDishID);
+
+        this.sendRequestGetUserOrders("http://org.ntnu.no/nigiriapp/getuserorders.php/?userID=" + userID);
+    }
+
+
 }
 
 
