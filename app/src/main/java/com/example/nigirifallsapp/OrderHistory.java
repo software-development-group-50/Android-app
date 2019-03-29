@@ -222,47 +222,16 @@ public class OrderHistory extends AppCompatActivity {
 
             }
         });
-
         requestQueue.add(stringRequest);
     }
 
     private void onActualResponseChangeStatus(String response) {
         // Reloads all the orders
         this.linearLayoutHistory.removeAllViews();
-        //sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
         String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
         url += Integer.toString(this.chosenDishID);
 
-        this.sendRequestGetOrders(url);
-    }
-
-    // Function for sending a HTTP request to the PHP-script
-    private void sendRequestGetOrders(String url) {
-        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                onActualResponseGetOrder(response); // The extra function is needed because of the scope of the function
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        requestQueue.add(stringRequest);
-    }
-
-
-    private void onActualResponseGetOrder(String response) {
-        List<OrderInAdmin> orderList = new ArrayList<>();
-        String[] arrayWithStringOrders = response.split(";");
-        for (String elementsInStringArray : arrayWithStringOrders) {
-            OrderInAdmin orderInAdmin = new OrderInAdmin(elementsInStringArray);
-            orderList.add(orderInAdmin);
-        }
-        addMenuToView(orderList);
+        this.sendRequestGetUserOrders(url);
     }
 
 
