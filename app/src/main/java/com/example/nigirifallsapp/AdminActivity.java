@@ -230,8 +230,8 @@ public class AdminActivity extends AppCompatActivity {
         this.sendRequestChangeStatus(url);
     }
 
-    public void onButtonReady(View view) {
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Pickup-ready&orderid=";
+    public void onButtonReady(View view){
+        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Pick-upready&orderid=";
         url += Integer.toString(this.chosenDishID);
         this.sendRequestChangeStatus(url);
     }
