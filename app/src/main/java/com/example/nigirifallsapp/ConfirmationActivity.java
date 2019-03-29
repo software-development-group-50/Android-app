@@ -211,7 +211,7 @@ public class ConfirmationActivity extends AppCompatActivity {
             case "Confirmed":
                 statusTextView.setTextColor(getResources().getColor(R.color.confirmedColor));
                 break;
-            case "Pick-up ready":
+            case "Pick-upready":
                 statusTextView.setTextColor(getResources().getColor(R.color.pickupColor));
                 if (!reviewSent) {
                 requestReview();
