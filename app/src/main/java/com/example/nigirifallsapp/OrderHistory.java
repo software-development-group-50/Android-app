@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,42 +31,35 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminActivity extends AppCompatActivity {
+public class OrderHistory extends AppCompatActivity {
 
     RequestQueue requestQueue;
-    Button buttonConfirm;
-    Button buttonFinish;
-    LinearLayout linearLayoutAdmin;
+    LinearLayout linearLayoutHistory;
     private int chosenDishIndex;
-    private int chosenDishID;
+    //private int chosenDishID;
     private int defaultColor;
     SharedPreferences sharedPreferences;
+    String userID;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    String location;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_order_history);
         this.requestQueue = Volley.newRequestQueue(this);
-        this.buttonConfirm = findViewById(R.id.buttonConfirm);
-        this.buttonFinish = findViewById(R.id.buttonFinish);
-        this.linearLayoutAdmin = findViewById(R.id.linearLayoutAdmin);
-        this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        this.linearLayoutHistory = findViewById(R.id.linearLayoutHistory);
         this.drawerLayout = findViewById(R.id.drawer_layout);
-        setTitle("Orders for " + this.sharedPreferences.getString("locationString", "error"));
-        this.location = this.sharedPreferences.getString("locationString", "error");
-        setTitle("Orders for " + this.location);
+        this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        this.userID = sharedPreferences.getString("phonenumber", "error");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.icon_menu);
-        this.navigationView = findViewById(R.id.nav_view);
-        this.navigationView.getMenu().getItem(0).setChecked(true);
-        this.navigationView.setNavigationItemSelectedListener(
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -82,12 +74,7 @@ public class AdminActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-
-        //sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
-        String url = "http://org.ntnu.no/nigiriapp/getallorders.php/?location=";
-        url += this.location;
-
-        this.sendRequestGetAllOrders(url);
+        this.sendRequestGetUserOrders("http://org.ntnu.no/nigiriapp/getuserorders.php/?userID=" + userID);
     }
 
     @Override
@@ -96,30 +83,27 @@ public class AdminActivity extends AppCompatActivity {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
-            case R.id.nav_admin_orders:
-                return true;
-            case R.id.nav_admin_reviews:
-                Intent intent = new Intent(this, ReviewsActivity.class);
-                startActivity(intent);
+            case R.id.nav_menu:
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.nav_logout:
                 logOutAlert();
+                return true;
+            case R.id.nav_myOrders:
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    // Function for sending a HTTP request to the PHP-script
-    private void sendRequestGetAllOrders(String url) {
-        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
+    private void sendRequestGetUserOrders(String url){
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                onActualResponseGetAllOrders(response); // The extra function is needed because of the scope of the function
+                onActualResponseGetUserOrders(response);
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onErrorResponse(VolleyError error){
 
             }
         });
@@ -127,7 +111,7 @@ public class AdminActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void onActualResponseGetAllOrders(String response) {
+    private void onActualResponseGetUserOrders(String response){
         List<OrderInAdmin> orderList = new ArrayList<>();
         String[] arrayWithStringOrders = response.split(";");
         for (String elementsInStringArray : arrayWithStringOrders) {
@@ -137,35 +121,6 @@ public class AdminActivity extends AppCompatActivity {
         addMenuToView(orderList);
     }
 
-    // Function for sending a HTTP request to the PHP-script
-    private void sendRequestChangeStatus(String url) {
-        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                onActualResponseChangeStatus(response); // The extra function is needed because of the scope of the function
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        requestQueue.add(stringRequest);
-    }
-
-    private void onActualResponseChangeStatus(String response) {
-        // Reloads all the orders
-        this.linearLayoutAdmin.removeAllViews();
-        //sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
-        String url = "http://org.ntnu.no/nigiriapp/getallorders.php/?location=";
-        url += this.location;
-
-        this.sendRequestGetAllOrders(url);
-    }
-
-    // Function for adding all orders to the ScrollView and adding ClickListeners to them
     private void addMenuToView(List<OrderInAdmin> orderInAdminList) {
         // Reversed for-loop, since we want newest order on top
         for (int i = orderInAdminList.size() - 1; i >= 0; i--) {
@@ -182,7 +137,7 @@ public class AdminActivity extends AppCompatActivity {
             textPickUpTime.setText(timeString.substring(0, timeString.length() - 3));
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
 
-            ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
+            ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutHistory);
             outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
             //Index -1 -> older orders are placed to the bottom
 
@@ -206,43 +161,15 @@ public class AdminActivity extends AppCompatActivity {
             //The setID is indexed as if the IDs are counting from top to bottom (0, 1, 2...)
             final int linearLayoutOrderIndex = linearLayoutOrder.getId();
 
-            this.linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setOnClickListener(new View.OnClickListener() {
+            this.linearLayoutHistory.getChildAt(linearLayoutOrderIndex).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    linearLayoutAdmin.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
-                    linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
+                    linearLayoutHistory.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
+                    linearLayoutHistory.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
                     chosenDishIndex = linearLayoutOrderIndex;
-                    chosenDishID = orderid;
+                    //chosenDishID = orderid;
                 }
             });
-        }
-    }
-
-    public void onButtonWaiting(View view) {
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Waiting&orderid=";
-        url += Integer.toString(this.chosenDishID);
-        this.sendRequestChangeStatus(url);
-    }
-
-    public void onButtonConfirm(View view) {
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Confirmed&orderid=";
-        url += Integer.toString(this.chosenDishID);
-        this.sendRequestChangeStatus(url);
-    }
-
-    public void onButtonReady(View view) {
-        String url = "http://folk.ntnu.no/magnuti/changeorder.php/?status=Pickup-ready&orderid=";
-        url += Integer.toString(this.chosenDishID);
-        this.sendRequestChangeStatus(url);
-    }
-
-    // This function is called on the hardware back-button on the phone.
-    @Override
-    public void onBackPressed() {
-        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            this.drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            logOutAlert();
         }
     }
 
@@ -257,26 +184,34 @@ public class AdminActivity extends AppCompatActivity {
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                navigationView.getMenu().getItem(0).setChecked(true);
                 dialog.dismiss();
-            }
-        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                navigationView.getMenu().getItem(0).setChecked(true);
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
     private void logOut() {
         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         sp.edit().putBoolean("logged", false).apply();
         sp.edit().putString("phonenumber", null).apply();
-        NavUtils.navigateUpFromSameTask(this); // This clears the Menu activity from the activity stack. Only Login activity now.
-        /*Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location and Login
-        startActivity(intent);*/
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            NavUtils.navigateUpFromSameTask(this);
+            /*Intent intent = new Intent(this, MenuActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location, Login and Menu
+            startActivity(intent);*/
+        }
     }
 }
+
+
+
+

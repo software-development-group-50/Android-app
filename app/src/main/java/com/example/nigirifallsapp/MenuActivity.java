@@ -13,12 +13,14 @@ import android.support.v7.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -27,11 +29,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import android.widget.Button;
 import android.support.v7.widget.Toolbar;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 
@@ -46,6 +50,8 @@ public class MenuActivity extends AppCompatActivity {
     Menu menu;
     Order order;
     private DrawerLayout drawerLayout;
+    private MaterialSearchView searchView;
+    private boolean searchQuickFix; // This is needed because onChange is called after onSubmit, due to a bug in Search View...
     private NavigationView navigationView;
 
 
@@ -54,9 +60,52 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity_layout);
         this.requestQueue = Volley.newRequestQueue(this);
-        this.sendRequest("http://folk.ntnu.no/magnuti/getalldish.php");
+        this.sendRequest("https://org.ntnu.no/nigiriapp/getalldish.php"); //http://folk.ntnu.no/magnuti/getalldish.php
         this.buttonCheckout = findViewById(R.id.buttonCheckout);
         this.drawerLayout = findViewById(R.id.drawer_layout);
+        this.searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        this.searchQuickFix = true;
+
+        //MaterialSearchView materialSearchView = findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (searchQuickFix) {
+                    LinearLayout linearLayout = findViewById(R.id.linearLayout);
+                    linearLayout.removeAllViews();
+                    addMenuToView(menu);
+                    removeDishesFromView(newText);
+                    //Log.e("change", "change");
+                }
+                searchQuickFix = true;
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchQuickFix = false;
+                LinearLayout linearLayout = findViewById(R.id.linearLayout);
+                linearLayout.removeAllViews();
+                addMenuToView(menu);
+                removeDishesFromView(query);
+                //Log.e("submit", "submit");
+                return false;
+            }
+
+        });
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                LinearLayout linearLayout = findViewById(R.id.linearLayout);
+                linearLayout.removeAllViews();
+                addMenuToView(menu);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,6 +132,15 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) { // Adds the SearchView
+        //return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.search_view, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -94,12 +152,14 @@ public class MenuActivity extends AppCompatActivity {
                 logOutAlert();
                 return true;
             case R.id.nav_myOrders:
-                //Intent intent = new Intent(this, LoginActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(this, OrderHistory.class);
+                startActivity(intent);
                 return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     // Function for sending a HTTP request to the PHP-script
     private void sendRequest(String url) {
@@ -120,12 +180,32 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void onActualResponse(String response) {
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
+        linearLayout.removeAllViews();
         stringFromPHP = response;
         this.menu = new Menu();
         menu.updateMenu(stringFromPHP);
         this.order = new Order(menu, 1, 1);
         addMenuToView(this.menu);
     }
+
+    // Removes the dishes which doesn´t match the search word
+    private void removeDishesFromView(String search) {
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
+        List<View> removeList = new ArrayList<>();
+        for (int i = 0; i < linearLayout.getChildCount(); i++) {
+            View view = linearLayout.getChildAt(i);
+            TextView textView = view.findViewById(R.id.textName);
+            String name = textView.getText().toString().trim().toLowerCase();
+            if (!name.contains(search.trim().toLowerCase())) {
+                removeList.add(view);
+            }
+        }
+        for (int i = 0; i < removeList.size(); i++) {
+            linearLayout.removeView(removeList.get(i));
+        }
+    }
+
 
     // Function for adding each Dish-item to the ScrollView
     private void addMenuToView(Menu menu) { //Parameter Menu-class
@@ -211,6 +291,8 @@ public class MenuActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (this.searchView.isSearchOpen()) {
+            this.searchView.closeSearch();
         } else {
             logOutAlert();
         }

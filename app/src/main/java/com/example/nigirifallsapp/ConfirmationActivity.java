@@ -51,9 +51,9 @@ public class ConfirmationActivity extends AppCompatActivity {
         @Override
         public void run() {
             int count = 0;
-            while(count < 100) {
+            while(count < 10000) {
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                 }
 
@@ -84,8 +84,13 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         this.requestSetQueue = Volley.newRequestQueue(this);
         TextView textView2 = findViewById(R.id.textView2);
-        String text = "Your order has been registered! Ready for pickup in about 30 min. \n\n\nYour pickup reference is: \n\n ";
-        text += getOrderID() +"\n\n\n\n";
+        String text;
+        if(min < 10){
+            text = "Your order has been registered! \n Pickup time is:  " + hourOfDay + ":0" + min;
+        } else {
+            text = "Your order has been registered! \n Pickup time is:  " + hourOfDay + ":" + min;
+        }
+        text += "\n\n\nYour pickup reference is: \n\n " + getOrderID() +"\n\n\n\n";
         textView2.setTextColor(getResources().getColor(R.color.textColorDark));
         textView2.setText(text);
         textView2.setTextSize(18);
@@ -137,8 +142,8 @@ public class ConfirmationActivity extends AppCompatActivity {
                 logOutAlert();
                 return true;
             case R.id.nav_myOrders:
-                //Intent intent = new Intent(this, LoginActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(this, OrderHistory.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -210,7 +215,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                 statusTextView.setTextColor(getResources().getColor(R.color.pickupColor));
                 if (!reviewSent) {
                 requestReview();
-                //reviewSent = true;
+                reviewSent = true;
                 }
 
                 break;
@@ -259,7 +264,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sendReview(rb.getRating(), review.getText().toString());
-                        reviewSent = true;
+                        //reviewSent = true;
                         dialog.dismiss();
                     }
                 });
