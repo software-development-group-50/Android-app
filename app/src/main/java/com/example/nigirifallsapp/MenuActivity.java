@@ -70,7 +70,7 @@ public class MenuActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(searchQuickFix) {
+                if (searchQuickFix) {
                     LinearLayout linearLayout = findViewById(R.id.linearLayout);
                     linearLayout.removeAllViews();
                     addMenuToView(menu);
@@ -291,6 +291,8 @@ public class MenuActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else if (this.searchView.isSearchOpen()) {
+            this.searchView.closeSearch();
         } else {
             logOutAlert();
         }

@@ -71,7 +71,12 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         this.requestQueue = Volley.newRequestQueue(this);
         TextView textView2 = findViewById(R.id.textView2);
-        String text = "Your order has been registered! \n Pickup time is:  " + hourOfDay + ":" + min;
+        String text;
+        if(min < 10){
+            text = "Your order has been registered! \n Pickup time is:  " + hourOfDay + ":0" + min;
+        } else {
+            text = "Your order has been registered! \n Pickup time is:  " + hourOfDay + ":" + min;
+        }
         text += "\n\n\nYour pickup reference is: \n\n " + getOrderID() +"\n\n\n\n";
         textView2.setTextColor(getResources().getColor(R.color.textColorDark));
         textView2.setText(text);
@@ -123,8 +128,8 @@ public class ConfirmationActivity extends AppCompatActivity {
                 logOutAlert();
                 return true;
             case R.id.nav_myOrders:
-                //Intent intent = new Intent(this, LoginActivity.class);
-                //startActivity(intent);
+                Intent intent = new Intent(this, OrderHistory.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

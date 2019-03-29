@@ -112,8 +112,13 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
                 this.errorText.setText("Cannot choose a pick-up time earlier than " + Integer.toString(orderHour) + ":" + Integer.toString(orderMin));
             }
         } else {
-            this.placeOrderBtn.setEnabled(true);
-            this.textTime.setText("Time:      " + hour + ":" + min);
+            if(min < 10){
+                this.placeOrderBtn.setEnabled(true);
+                this.textTime.setText("Time:      " + hour + ":0" + min);
+            } else {
+                this.placeOrderBtn.setEnabled(true);
+                this.textTime.setText("Time:      " + hour + ":" + min);
+            }
         }
 
     }
