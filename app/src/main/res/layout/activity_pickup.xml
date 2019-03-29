@@ -9,31 +9,40 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="0dp"
+        android:layout_marginBottom="90dp"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintBottom_toTopOf="@+id/message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/Header_pickup"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/Header_pickup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
         android:gravity="center"
         android:text=""
         android:textAlignment="center"
         android:textColor="@color/textColorPrimary"
         android:textSize="40sp"
         android:typeface="serif"
-        app:layout_constraintBottom_toTopOf="@+id/message"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/toolbar"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <Button
         android:id="@+id/place_order"
         android:layout_width="180dp"
-        android:layout_height="48dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="47dp"
         android:background="@color/counterButton"
         android:onClick="onButtonPlaceOrder"
         android:text="Place order"
@@ -48,14 +57,15 @@
     <Button
         android:id="@+id/button"
         android:layout_width="180dp"
-        android:layout_height="48dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="45dp"
         android:background="@color/colorSecondary"
         android:text="Pick time"
         android:textSize="16dp"
         android:typeface="sans"
         app:layout_constraintBottom_toTopOf="@+id/textTime"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/message" />
 
@@ -67,9 +77,10 @@
         android:layout_marginLeft="40dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
+        android:layout_marginBottom="47dp"
         android:gravity="center"
-        android:textSize="28sp"
         android:textColor="@color/colorPrimaryDark"
+        android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@+id/error_message_pickup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -84,6 +95,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
+        android:layout_marginBottom="47dp"
         android:gravity="center"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="20sp"
@@ -101,15 +113,16 @@
         android:layout_marginLeft="40dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
+        android:layout_marginBottom="47dp"
         android:gravity="center"
-        android:typeface="sans"
         android:text="Please choose a pick-up time for your order. \n\nOur chefs will need half an hour to prepare your order, so you will be unable to choose a pick-up time earlier than 30 mins after the order is placed."
-        android:textSize="16dp"
         android:textColor="@color/textColorPrimary"
+        android:textSize="16dp"
+        android:typeface="sans"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Header_pickup" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </android.support.constraint.ConstraintLayout>
