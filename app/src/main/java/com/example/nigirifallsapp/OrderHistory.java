@@ -136,11 +136,15 @@ public class OrderHistory extends AppCompatActivity {
             final TextView textOrders = orderInAdminView.findViewById(R.id.textOrderID);
             final TextView textPickUpTime = orderInAdminView.findViewById(R.id.textPickUpTime);
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
+            final TextView textName = orderInAdminView.findViewById(R.id.textName);
+            final TextView textPhone = orderInAdminView.findViewById(R.id.textPhone);
 
             textOrders.setText(orderInAdminList.get(i).getOrderId());
             String timeString = orderInAdminList.get(i).getPickUpTime();
             textPickUpTime.setText(timeString.substring(0, timeString.length() - 3));
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
+            textName.setText(orderInAdminList.get(i).getName());
+            textPhone.setText(orderInAdminList.get(i).getPhone());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutHistory);
             outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
