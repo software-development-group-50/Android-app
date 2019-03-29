@@ -63,7 +63,7 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
             @Override
             public void onClick(View v) {
                 DialogFragment timePicker = new TimePickerFragment();
-                timePicker.show(getSupportFragmentManager(), "Pick time");
+                timePicker.show(getSupportFragmentManager(), "Choose pick-up time");
             }
         });
     }
@@ -114,10 +114,10 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         } else {
             if(min < 10){
                 this.placeOrderBtn.setEnabled(true);
-                this.textTime.setText("Time:      " + hour + ":0" + min);
+                this.textTime.setText("Pick-up time:  " + hour + ":0" + min);
             } else {
                 this.placeOrderBtn.setEnabled(true);
-                this.textTime.setText("Time:      " + hour + ":" + min);
+                this.textTime.setText("Pick-up time:  " + hour + ":" + min);
             }
         }
 
