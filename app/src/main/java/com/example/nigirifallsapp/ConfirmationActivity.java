@@ -77,7 +77,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         } else {
             text = "Your order has been registered and is sent to the restaurant. Your pick-up time is " + hourOfDay + ":" + min + ".";
         }
-        text += "\n\n\nYour pickup reference is" + getOrderID() +"\n\n\n\n";
+        text += "\n\n\nYour pickup reference is" + getOrderID() +"\n\n\n\n" + ".";
         textView2.setTextColor(getResources().getColor(R.color.textColorDark));
         textView2.setText(text);
         textView2.setTextSize(18);
