@@ -33,10 +33,11 @@
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:gravity="center"
-            android:text="IT'S SUSHI TIME! "
+            android:text="IT'S SUSHI TIME!"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="32sp"
-            android:typeface="serif"
+            android:typeface="sans
+"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

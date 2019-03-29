@@ -73,9 +73,9 @@ public class ConfirmationActivity extends AppCompatActivity {
         TextView textView2 = findViewById(R.id.textView2);
         String text;
         if(min < 10){
-            text = "Your order has been registered and is sent to the restaurant. You pick-up time is " + hourOfDay + ":0" + min;
+            text = "Your order has been registered and is sent to the restaurant. You pick-up time is " + hourOfDay + ":0" + min + ".";
         } else {
-            text = "Your order has been registered and is sent to the restaurant. Your pick-up time is " + hourOfDay + ":" + min;
+            text = "Your order has been registered and is sent to the restaurant. Your pick-up time is " + hourOfDay + ":" + min + ".";
         }
         text += "\n\n\nYour pickup reference is" + getOrderID() +"\n\n\n\n";
         textView2.setTextColor(getResources().getColor(R.color.textColorDark));
