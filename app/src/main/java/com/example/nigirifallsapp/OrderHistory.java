@@ -1,13 +1,17 @@
 package com.example.nigirifallsapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.preference.DialogPreference;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -174,6 +178,7 @@ public class OrderHistory extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     linearLayoutHistory.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
+                    linearLayoutHistory.getChildAt(chosenDishIndex).setBackground(getResources().getDrawable(R.drawable.customborder));
                     linearLayoutHistory.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
                     chosenDishIndex = linearLayoutOrderIndex;
                     chosenDishID = orderid;
@@ -225,15 +230,15 @@ public class OrderHistory extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to cancel your order?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
+                        url += Integer.toString(chosenDishID);
+                        sendRequestChangeStatus(url);
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
-                url += Integer.toString(chosenDishID);
-                sendRequestChangeStatus(url);
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which){
                 dialog.dismiss();
             }
         });

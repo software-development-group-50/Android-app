@@ -214,6 +214,7 @@ public class AdminActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     linearLayoutAdmin.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
+                    linearLayoutAdmin.getChildAt(chosenDishIndex).setBackground(getResources().getDrawable(R.drawable.customborder));
                     linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
                     chosenDishIndex = linearLayoutOrderIndex;
                     chosenDishID = orderid;
