@@ -15,10 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ReviewsActivity"></activity>
         <activity
             android:name=".ChooseLocationActivity"
-            android:label="Nigiri Falls">
+            android:label="Nigiri Falls"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,36 +28,42 @@
         <activity
             android:name=".LoginActivity"
             android:label="Login"
-            android:parentActivityName=".ChooseLocationActivity"></activity>
+            android:parentActivityName=".ChooseLocationActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".AdminActivity"
             android:label="Orders for [location]"
-            android:parentActivityName=".LoginActivity"></activity>
+            android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RegisterActivity"
             android:label="Register"
-            android:parentActivityName=".LoginActivity"></activity>
+            android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MenuActivity"
             android:label="Menu"
-
-            android:parentActivityName=".LoginActivity">
-        </activity>
+            android:parentActivityName=".LoginActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".OrderHistory"
             android:label="Your Orders"
-            android:parentActivityName=".MenuActivity">
-        </activity>
+            android:parentActivityName=".MenuActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".CheckoutActivity"
             android:label="Checkout"
-            android:parentActivityName=".MenuActivity"></activity>
+            android:parentActivityName=".MenuActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PickupActivity"
             android:label="Pick-up time"
-            android:parentActivityName=".CheckoutActivity"></activity>
+            android:parentActivityName=".CheckoutActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ConfirmationActivity"
             android:label="Confirmation"
-            android:parentActivityName=".MenuActivity"></activity>
+            android:parentActivityName=".MenuActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ReviewsActivity" />
     </application>
 
 </manifest>
