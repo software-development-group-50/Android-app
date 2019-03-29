@@ -45,11 +45,13 @@
             android:label="Menu"
             android:parentActivityName=".LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".OrderHistory"
+        <activity
+            android:name=".OrderHistory"
             android:label="Your Orders"
             android:parentActivityName=".MenuActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".CheckoutActivity"
+        <activity
+            android:name=".CheckoutActivity"
             android:label="Checkout"
             android:parentActivityName=".MenuActivity"
             android:screenOrientation="portrait" />
@@ -63,7 +65,11 @@
             android:label="Confirmation"
             android:parentActivityName=".MenuActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ReviewsActivity" />
+        <activity
+            android:name=".ReviewsActivity"
+            android:label="Reviews"
+            android:parentActivityName=".AdminActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

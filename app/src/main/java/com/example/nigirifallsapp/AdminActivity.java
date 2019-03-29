@@ -56,7 +56,6 @@ public class AdminActivity extends AppCompatActivity {
         this.linearLayoutAdmin = findViewById(R.id.linearLayoutAdmin);
         this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         this.drawerLayout = findViewById(R.id.drawer_layout);
-        setTitle("Orders for " + this.sharedPreferences.getString("locationString", "error"));
         this.location = this.sharedPreferences.getString("locationString", "error");
         setTitle("Orders for " + this.location);
 
