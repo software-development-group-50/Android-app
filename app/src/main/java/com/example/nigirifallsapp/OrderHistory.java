@@ -231,7 +231,7 @@ public class OrderHistory extends AppCompatActivity {
         String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
         url += Integer.toString(this.chosenDishID);
 
-        this.sendRequestGetUserOrders(url);
+        this.sendRequestGetUserOrders("http://org.ntnu.no/nigiriapp/getuserorders.php/?userID=" + userID);
     }
 
 
