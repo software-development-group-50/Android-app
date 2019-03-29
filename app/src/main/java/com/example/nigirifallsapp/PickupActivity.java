@@ -2,6 +2,7 @@ package com.example.nigirifallsapp;
 
 import android.content.Intent;
 import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +36,7 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     RequestQueue requestQueue;
     TextView errorText;
     TextView textTime;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +45,14 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
         Intent intent = this.getIntent();
         this.url = intent.getStringExtra(CheckoutActivity.OrderIntent);
         this.requestQueue = Volley.newRequestQueue(this);
+        this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
 
         this.errorText = findViewById(R.id.error_message_pickup);
         this.placeOrderBtn = findViewById(R.id.place_order);
         this.textTime = findViewById(R.id.textTime);
         Button chooseTime = findViewById(R.id.button);
+
+        this.placeOrderBtn.setEnabled(false);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,7 +102,7 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
             this.placeOrderBtn.setEnabled(false);
             int orderHour = currentHour;
             int orderMin = currentMin + 30;
-            if(orderMin > 59){
+            if (orderMin > 59) {
                 orderHour++;
                 orderMin -= 60;
             }
@@ -114,8 +119,13 @@ public class PickupActivity extends AppCompatActivity implements TimePickerDialo
     }
 
     public void onButtonPlaceOrder(View view) {
+        this.placeOrderBtn.setEnabled(false);
         this.url += "&time=";
         this.url += Integer.toString(this.hourOfDay) + ":" + Integer.toString(this.min) + ":00";
+        this.url += "&location=";
+        this.url += sharedPreferences.getString("locationString", "error");
+        this.url += "&userID=";
+        this.url += sharedPreferences.getString("phonenumber", "error");
         //Log.e("Url", url);
         sendRequest(this.url);
 
