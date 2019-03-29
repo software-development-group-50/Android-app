@@ -25,7 +25,7 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="347dp"
+            android:layout_width="0dp"
             android:layout_height="53dp"
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
@@ -39,7 +39,7 @@
             android:typeface="sans
 "
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
