@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,6 +42,8 @@ public class OrderHistory extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String userID;
     private DrawerLayout drawerLayout;
+    private int chosenDishID;
+    Button cancelButton;
 
 
     @Override
@@ -52,6 +55,7 @@ public class OrderHistory extends AppCompatActivity {
         this.drawerLayout = findViewById(R.id.drawer_layout);
         this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         this.userID = sharedPreferences.getString("phonenumber", "error");
+        this.cancelButton = findViewById(R.id.cancelButton);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,7 +100,7 @@ public class OrderHistory extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void sendRequestGetUserOrders(String url){
+    private void sendRequestGetUserOrders(String url) {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -104,7 +108,7 @@ public class OrderHistory extends AppCompatActivity {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error){
+            public void onErrorResponse(VolleyError error) {
 
             }
         });
@@ -112,7 +116,7 @@ public class OrderHistory extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void onActualResponseGetUserOrders(String response){
+    private void onActualResponseGetUserOrders(String response) {
         List<OrderInAdmin> orderList = new ArrayList<>();
         String[] arrayWithStringOrders = response.split(";");
         for (String elementsInStringArray : arrayWithStringOrders) {
@@ -168,7 +172,7 @@ public class OrderHistory extends AppCompatActivity {
                     linearLayoutHistory.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
                     linearLayoutHistory.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
                     chosenDishIndex = linearLayoutOrderIndex;
-                    //chosenDishID = orderid;
+                    chosenDishID = orderid;
                 }
             });
         }
@@ -191,11 +195,77 @@ public class OrderHistory extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void logOut() {
         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         sp.edit().putBoolean("logged", false).apply();
         NavUtils.navigateUpFromSameTask(this); // This clears the Menu activity from the activity stack. Only Login activity now.
     }
+
+    public void onCancelButton(View view) {
+        String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
+        url += Integer.toString(this.chosenDishID);
+        this.sendRequestChangeStatus(url);
+    }
+
+    // Function for sending a HTTP request to the PHP-script
+    private void sendRequestChangeStatus(String url) {
+        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                onActualResponseChangeStatus(response); // The extra function is needed because of the scope of the function
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(stringRequest);
+    }
+
+    private void onActualResponseChangeStatus(String response) {
+        // Reloads all the orders
+        this.linearLayoutHistory.removeAllViews();
+        //sendRequestGetAllOrders("http://folk.ntnu.no/magnuti/getallorders.php");
+        String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
+        url += Integer.toString(this.chosenDishID);
+
+        this.sendRequestGetOrders(url);
+    }
+
+    // Function for sending a HTTP request to the PHP-script
+    private void sendRequestGetOrders(String url) {
+        // The requests are sent in cleartext over HTTP. Use HTTPS when sending passwords.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                onActualResponseGetOrder(response); // The extra function is needed because of the scope of the function
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        requestQueue.add(stringRequest);
+    }
+
+
+    private void onActualResponseGetOrder(String response) {
+        List<OrderInAdmin> orderList = new ArrayList<>();
+        String[] arrayWithStringOrders = response.split(";");
+        for (String elementsInStringArray : arrayWithStringOrders) {
+            OrderInAdmin orderInAdmin = new OrderInAdmin(elementsInStringArray);
+            orderList.add(orderInAdmin);
+        }
+        addMenuToView(orderList);
+    }
+
+
 }
 
 
