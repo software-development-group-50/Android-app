@@ -67,7 +67,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ReviewsActivity"
-            android:label="Reviews"
+            android:label="User reviews"
             android:parentActivityName=".AdminActivity"
             android:screenOrientation="portrait" />
     </application>

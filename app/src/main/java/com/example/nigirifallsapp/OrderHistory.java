@@ -48,6 +48,7 @@ public class OrderHistory extends AppCompatActivity {
     String userID;
     private DrawerLayout drawerLayout;
     private int chosenDishID;
+    private NavigationView navigationView;
     Button cancelButton;
 
 
@@ -67,8 +68,8 @@ public class OrderHistory extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.icon_menu);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
+        this.navigationView = findViewById(R.id.nav_view);
+        this.navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -198,7 +199,13 @@ public class OrderHistory extends AppCompatActivity {
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                navigationView.getMenu().getItem(1).setChecked(true);
                 dialog.dismiss();
+            }
+        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                navigationView.getMenu().getItem(1).setChecked(true);
             }
         });
         AlertDialog dialog = builder.create();
@@ -220,9 +227,6 @@ public class OrderHistory extends AppCompatActivity {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             NavUtils.navigateUpFromSameTask(this);
-            /*Intent intent = new Intent(this, MenuActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location, Login and Menu
-            startActivity(intent);*/
         }
     }
 
