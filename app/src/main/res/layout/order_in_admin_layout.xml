@@ -4,22 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/customborder">
 
     <TextView
         android:id="@+id/textOrderID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:text="orderID"
         android:textColor="@color/textColorPrimary"
-        android:textSize="28sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutOrder"
         app:layout_constraintEnd_toStartOf="@+id/textPickUpTime"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textName" />
 
     <TextView
         android:id="@+id/textPickUpTime"
@@ -27,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="pickUpTime"
         android:textColor="@color/textColorPrimary"
-        android:textSize="28sp"
+        android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textOrderID"
         app:layout_constraintEnd_toStartOf="@+id/textOrderStatus"
         app:layout_constraintHorizontal_bias="0.5"
@@ -40,18 +39,39 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textOrderID"
-        tools:layout_editor_absoluteX="16dp"></LinearLayout>
+        tools:layout_editor_absoluteX="0dp"></LinearLayout>
 
     <TextView
         android:id="@+id/textOrderStatus"
         android:layout_width="177dp"
         android:layout_height="36dp"
         android:textColor="@color/colorPrimary"
-        android:textSize="28sp"
+        android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textPickUpTime"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textPickUpTime"
         tools:text="orderStatus" />
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="textName"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/textOrderID"
+        app:layout_constraintStart_toStartOf="@+id/textOrderID"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="textPhone"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textName"
+        app:layout_constraintStart_toStartOf="@+id/textOrderStatus" />
 
 </android.support.constraint.ConstraintLayout>

@@ -56,7 +56,6 @@ public class AdminActivity extends AppCompatActivity {
         this.linearLayoutAdmin = findViewById(R.id.linearLayoutAdmin);
         this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         this.drawerLayout = findViewById(R.id.drawer_layout);
-        setTitle("Orders for " + this.sharedPreferences.getString("locationString", "error"));
         this.location = this.sharedPreferences.getString("locationString", "error");
         setTitle("Orders for " + this.location);
 
@@ -176,11 +175,15 @@ public class AdminActivity extends AppCompatActivity {
             final TextView textOrders = orderInAdminView.findViewById(R.id.textOrderID);
             final TextView textPickUpTime = orderInAdminView.findViewById(R.id.textPickUpTime);
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
+            final TextView textName = orderInAdminView.findViewById(R.id.textName);
+            final TextView textPhone = orderInAdminView.findViewById(R.id.textPhone);
 
             textOrders.setText(orderInAdminList.get(i).getOrderId());
             String timeString = orderInAdminList.get(i).getPickUpTime();
             textPickUpTime.setText(timeString.substring(0, timeString.length() - 3));
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
+            textName.setText(orderInAdminList.get(i).getName());
+            textPhone.setText(orderInAdminList.get(i).getPhone());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutAdmin);
             outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
@@ -210,6 +213,7 @@ public class AdminActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     linearLayoutAdmin.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
+                    linearLayoutAdmin.getChildAt(chosenDishIndex).setBackground(getResources().getDrawable(R.drawable.customborder));
                     linearLayoutAdmin.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
                     chosenDishIndex = linearLayoutOrderIndex;
                     chosenDishID = orderid;

@@ -34,8 +34,8 @@ public class CheckoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.checkout_layout);
-        this.buttonPlaceOrder = findViewById(R.id.button3);
-        this.buttonBackToMenu = findViewById(R.id.returN);
+        this.buttonPlaceOrder = findViewById(R.id.buttonPickUpTime);
+        this.buttonBackToMenu = findViewById(R.id.clearAllButton);
         this.requestQueue = Volley.newRequestQueue(this);
 
         // Here the order and order-hashmap is fetched from the MenuActivity

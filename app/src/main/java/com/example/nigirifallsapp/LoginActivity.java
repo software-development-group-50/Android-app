@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         this.requestQueue = Volley.newRequestQueue(this);
         this.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
 
+        setTitle("Login to " + this.sharedPreferences.getString("locationString", "error"));
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

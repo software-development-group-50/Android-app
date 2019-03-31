@@ -1,13 +1,17 @@
 package com.example.nigirifallsapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.preference.DialogPreference;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -44,6 +48,7 @@ public class OrderHistory extends AppCompatActivity {
     String userID;
     private DrawerLayout drawerLayout;
     private int chosenDishID;
+    private NavigationView navigationView;
     Button cancelButton;
 
 
@@ -63,8 +68,8 @@ public class OrderHistory extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.icon_menu);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
+        this.navigationView = findViewById(R.id.nav_view);
+        this.navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -136,11 +141,15 @@ public class OrderHistory extends AppCompatActivity {
             final TextView textOrders = orderInAdminView.findViewById(R.id.textOrderID);
             final TextView textPickUpTime = orderInAdminView.findViewById(R.id.textPickUpTime);
             final TextView textOrderStatus = orderInAdminView.findViewById(R.id.textOrderStatus);
+            final TextView textName = orderInAdminView.findViewById(R.id.textName);
+            final TextView textPhone = orderInAdminView.findViewById(R.id.textPhone);
 
             textOrders.setText(orderInAdminList.get(i).getOrderId());
             String timeString = orderInAdminList.get(i).getPickUpTime();
             textPickUpTime.setText(timeString.substring(0, timeString.length() - 3));
             textOrderStatus.setText(orderInAdminList.get(i).getStatus());
+            textName.setText(orderInAdminList.get(i).getName());
+            textPhone.setText(orderInAdminList.get(i).getPhone());
 
             ViewGroup outerInsertPoint = (ViewGroup) findViewById(R.id.linearLayoutHistory);
             outerInsertPoint.addView(orderInAdminView, -1, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
@@ -170,6 +179,7 @@ public class OrderHistory extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     linearLayoutHistory.getChildAt(chosenDishIndex).setBackgroundColor(defaultColor);
+                    linearLayoutHistory.getChildAt(chosenDishIndex).setBackground(getResources().getDrawable(R.drawable.customborder));
                     linearLayoutHistory.getChildAt(linearLayoutOrderIndex).setBackgroundColor(Color.GRAY);
                     chosenDishIndex = linearLayoutOrderIndex;
                     chosenDishID = orderid;
@@ -189,7 +199,13 @@ public class OrderHistory extends AppCompatActivity {
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                navigationView.getMenu().getItem(1).setChecked(true);
                 dialog.dismiss();
+            }
+        }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                navigationView.getMenu().getItem(1).setChecked(true);
             }
         });
         AlertDialog dialog = builder.create();
@@ -211,9 +227,6 @@ public class OrderHistory extends AppCompatActivity {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             NavUtils.navigateUpFromSameTask(this);
-            /*Intent intent = new Intent(this, MenuActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // This clears all activities except Location, Login and Menu
-            startActivity(intent);*/
         }
     }
 
@@ -221,15 +234,15 @@ public class OrderHistory extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to cancel your order?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
+                        url += Integer.toString(chosenDishID);
+                        sendRequestChangeStatus(url);
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String url = "http://org.ntnu.no/nigiriapp/changestatus.php/?orderID=";
-                url += Integer.toString(chosenDishID);
-                sendRequestChangeStatus(url);
-            }
-        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which){
                 dialog.dismiss();
             }
         });
